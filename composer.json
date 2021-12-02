@@ -1,0 +1,26 @@
+{
+    "name": "seche/p5_oc_blog",
+    "description": "Projet 5 : Developpeur d'application Symfony (OpenClassrooms)",
+    "type": "project",
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6",
+        "tracy/tracy": "^2.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Router\\": "routes/",
+            "App\\": "app/",
+            "Database\\": "database/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jonathan Secher",
+            "email": "secher.jonathan@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "nette/forms": "^3.1"
+    }
+}
