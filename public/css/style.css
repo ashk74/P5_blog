@@ -1,18 +1,18 @@
 .header-index {
-	background-color: #593196;
+  background-color: #593196;
 }
 
 .header-blog {
-	background-image: url("../images/orion-nebula-11107_1920.jpg");
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-attachment: fixed;
-	height: 50vh;
+  background-image: url("../images/orion-nebula-11107_1920.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 50vh;
 }
 
 .progress {
-    height: 20px;
+  height: 20px;
 }
 
 .feature {
@@ -29,16 +29,17 @@
 }
 
 .badge:hover {
-  filter:grayscale(100%);
-  color:white;
+  filter: grayscale(100%);
+  color: white;
 }
 
 a {
   text-decoration: none;
-  color: #009cdc ;
+  color: #009cdc;
 }
 
-.dropdown-item, .dropdown-divider {
+.dropdown-item,
+.dropdown-divider {
   color: white;
 }
 
@@ -48,30 +49,29 @@ a {
 }
 
 .footer-items a {
-	color: white;
+  color: white;
 }
 
 .footer-items a:hover {
-	color: #593196;
+  color: #593196;
 }
 
 .btn-primary:hover {
-	background-color: rgba(0, 0, 0, 0.884);
+  background-color: rgba(0, 0, 0, 0.884);
 }
 
 .copyright {
-	background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 /* Load font-awesome font for unicode placeholder */
 .fa-unicode {
-	font-family: 'Helvetica', FontAwesome, sans-serif;
+  font-family: 'Helvetica', FontAwesome, sans-serif;
 }
 
 .text-justify {
   text-align: justify;
 }
-
 
 /* Timeline */
 ul.timeline {
@@ -79,7 +79,7 @@ ul.timeline {
   position: relative;
 }
 
-ul.timeline:before {
+ul.timeline::before {
   content: ' ';
   background: #d4d9df;
   display: inline-block;
@@ -95,7 +95,7 @@ ul.timeline > li {
   padding-left: 20px;
 }
 
-ul.timeline > li:before {
+ul.timeline > li::before {
   content: ' ';
   background: white;
   display: inline-block;
