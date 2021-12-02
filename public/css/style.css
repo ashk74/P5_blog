@@ -1,0 +1,109 @@
+.header-index {
+	background-color: #593196;
+}
+
+.header-blog {
+	background-image: url("../images/orion-nebula-11107_1920.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+	height: 50vh;
+}
+
+.progress {
+    height: 20px;
+}
+
+.feature {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  width: 4rem;
+  font-size: 2rem;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.badge:hover {
+  filter:grayscale(100%);
+  color:white;
+}
+
+a {
+  text-decoration: none;
+  color: #009cdc ;
+}
+
+.dropdown-item, .dropdown-divider {
+  color: white;
+}
+
+.dropdown-item.active, .dropdown-item:hover {
+  background-color: white;
+  color: #593196;
+}
+
+.footer-items a {
+	color: white;
+}
+
+.footer-items a:hover {
+	color: #593196;
+}
+
+.btn-primary:hover {
+	background-color: rgba(0, 0, 0, 0.884);
+}
+
+.copyright {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Load font-awesome font for unicode placeholder */
+.fa-unicode {
+	font-family: 'Helvetica', FontAwesome, sans-serif;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+
+/* Timeline */
+ul.timeline {
+  list-style-type: none;
+  position: relative;
+}
+
+ul.timeline:before {
+  content: ' ';
+  background: #d4d9df;
+  display: inline-block;
+  position: absolute;
+  left: 29px;
+  width: 2px;
+  height: 100%;
+  z-index: 400;
+}
+
+ul.timeline > li {
+  margin: 20px 0;
+  padding-left: 20px;
+}
+
+ul.timeline > li:before {
+  content: ' ';
+  background: white;
+  display: inline-block;
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid #593196;
+  left: 20px;
+  width: 20px;
+  height: 20px;
+  z-index: 400;
+}
