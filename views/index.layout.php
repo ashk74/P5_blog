@@ -14,7 +14,7 @@
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div class="container">
-                    <a class="navbar-brand" href="/">
+                    <a class="navbar-brand" href="index.php">
                         <i class="fas fa-code fa-2x"></i>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggler-nav" aria-controls="toggler-nav" aria-expanded="false">
@@ -43,9 +43,7 @@
             </nav>
         </header>
 
-        <section class="container mt-4">
-            <?= $pageContent ?>
-        </section>
+        <?= $pageContent ?>
 
         <!-- Footer -->
         <footer class="bg-dark text-white">
