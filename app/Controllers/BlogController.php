@@ -2,20 +2,28 @@
 
 namespace App\Controllers;
 
+use App\Models\Post;
+
 class BlogController extends Controller
 {
     public function index()
     {
-        return $this->view('blog.index');
+        return $this->view('blog/index');
     }
 
     public function list()
     {
-        return $this->view('blog.list');
+        $post = new Post;
+        $posts = $post->all();
+
+        return $this->view('blog/list', compact('posts'));
     }
 
     public function show(int $id)
     {
-        return $this->view('blog.show', compact('id'));
+        $post = new Post;
+        $post = $post->findById($id);
+
+        return $this->view('blog/show', compact('post'));
     }
 }
