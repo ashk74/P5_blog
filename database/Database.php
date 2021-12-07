@@ -17,7 +17,7 @@ class Database
     /**
      * @var string Define DBMS, database and host used for connect database
      */
-    private const DSN = 'mysql:dbname=p5_blog;host=localhost';
+    private const DSN = 'mysql:dbname=blog;host=localhost';
 
     /**
      * @var string Define username used for connect database
@@ -27,7 +27,7 @@ class Database
     /**
      * @var string Define password used for connect database
      */
-    private const PASSWORD = 'toor';
+    private const PASSWORD = '';
 
     /**
      * Connect to the database and returns the connection
