@@ -27,18 +27,34 @@ abstract class Model
 
     public function all(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM {$this->table} ORDER BY last_update DESC");
-        $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this));
-        
-        return $stmt->fetchAll();
+        return $this->query("SELECT * FROM {$this->table} ORDER BY last_update DESC");
     }
 
     public function findById(int $id): Model
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE id = ?");
-        $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this));
-        $stmt->execute([$id]);
+        return $this->query("SELECT * FROM {$this->table} WHERE id = ?", $id, true);
+    }
 
-        return $stmt->fetch();
+    /**
+     * Refactoring query for fetch() or fetchAll()
+     *
+     * @param string $sql SQL query
+     * @param integer|null $param Param to execute
+     * @param boolean $single True for fetch() | False for fetchAll()
+     */
+    public function query(string $sql, int $param = null, bool $single = false)
+    {
+        $method = is_null($param) ? 'query' : 'prepare';
+        $fetch = !$single ? 'fetchAll' : 'fetch';
+
+        $stmt = $this->pdo->$method($sql);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this));
+
+        if ($method === 'query') {
+           return $stmt->$fetch();
+        } else {
+            $stmt->execute([$param]);
+            return $stmt->$fetch();
+        }
     }
 }
