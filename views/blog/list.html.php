@@ -1,4 +1,3 @@
-
 <section class="row">
     <div class="input-group col-12 mb-4">
         <input type="text" class="form-control" placeholder="Rechercher">
@@ -10,21 +9,22 @@
         <div class="col">
             <!-- Blog article 1 -->
             <div class="card mb-4">
-                <a href="posts/<?= $post->id ?>"><img class="card-img-top" src="../public/images/<?= $post->photo ?>" alt="..." /></a>
+                <a href="post/<?= $post->id ?>"><img class="card-img-top" src="public/images/<?= $post->photo ?>" alt="..." /></a>
                 <div class="card-body">
                     <div class="row">
                         <h2 class="col-7 card-title h4"><?= $post->title; ?></h2>
-                        <div class="col-5 small text-muted text-end">Mis à jour le <?= $post->last_update ?></div>
+                        <div class="col-5 small text-muted text-end">Mis à jour le <?= $post->getLastUpdate() ?></div>
                     </div>
-                    <p class="card-text text-justify"><?= $post->chapo; ?></p>
+                    <p class="card-text text-justify"><?= $post->getExcerpt(); ?></p>
                     <div>
                         <ul class="list-inline">
+                        <?php foreach($post->getTags() as $tag): ?>
                             <li class="list-inline-item">
-                                <a href="#" class=" badge rounded-pill bg-info">
-                                    <?php // $category = $categories->fetchLinkedCategory($post['id']); ?>
-                                    <i class="fas fa-tag fa-sm"></i> <?= $category->category_id?>
+                                <a href="/tags/<?= $tag->tag_id ?>" class="badge rounded-pill bg-info">
+                                    <i class="fas fa-tags fa-sm"></i> <?= $tag->name ?>
                                 </a>
                             </li>
+                        <?php endforeach ?>
                         </ul>
                     </div>
                 </div>

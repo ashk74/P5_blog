@@ -7,7 +7,7 @@
             <div class="card-body">
                 <div class="row">
                     <h1 class="col-md-7 card-title h2 pb-2"><?= $post->title ?></h1>
-                    <span class="col-md-5 small text-muted text-md-end pb-3">Mis à jour le <?= $post->last_update ?></span>
+                    <small class="col-md-5 small text-muted text-md-end pb-3">Mis à jour le <?= $post->getLastUpdate(true) ?></small>
                 </div>
                 <p class="card-text text-bold text-justify"><?= $post->chapo ?></p>
                 <p class="card-text text-justify"><?= $post->content ?></p>
@@ -19,12 +19,15 @@
                         </div>
                     </div>
                     <ul class="col-md-5 list-inline order-md-1">
+                    <?php foreach($post->getTags() as $tag): ?>
                         <li class="list-inline-item badge rounded-pill bg-info">
-                            <i class="fas fa-tag fa-sm"></i> <?= $post->category_id?>
+                            <i class="fas fa-tags fa-sm"></i> <?= $tag->name ?>
                         </li>
+                    <?php endforeach ?>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
+

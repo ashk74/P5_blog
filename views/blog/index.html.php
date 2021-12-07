@@ -1,7 +1,7 @@
 <!-- Header -->
 <section class="py-4 header-index">
     <div class="text-center my-5">
-        <img class="img-fluid rounded-circle mb-4" src="../public/images/avatar-1.png" max alt="..." />
+        <img class="img-fluid rounded-circle mb-4" src="public/images/avatar-1.png" max alt="..." />
         <h1 class="text-white fs-3 fw-bolder">Jonathan Secher</h1>
         <figure class="text-center">
             <blockquote class="blockquote text-white-50">
