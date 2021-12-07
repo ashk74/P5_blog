@@ -36,7 +36,6 @@ class Database
      */
     public static function dbConnect(): PDO
     {
-        // TODO Revoir la video sur la connexion à la BDD pour injection de dépendance
         if (self::$instance === null) {
             self::$instance = new PDO(
                 self::DSN,
