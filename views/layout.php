@@ -31,12 +31,18 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/contact">Contact</a>
                             </li>
+                        <?php if (!isset($_SESSION['auth'])): ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="/signup">Inscription</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/login">Connexion</a>
                             </li>
+                        <?php else: ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/logout">Déconnexion</a>
+                            </li>
+                        <?php endif ?>
                         </ul>
                     </div>
                 </div>
