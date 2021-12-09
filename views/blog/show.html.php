@@ -18,13 +18,17 @@
                             <span class="text-bold ps-3"><?= $post->author ?></span>
                         </div>
                     </div>
-                    <ul class="col-md-5 list-inline order-md-1">
-                    <?php foreach($post->getTags() as $tag): ?>
-                        <li class="list-inline-item badge rounded-pill bg-info">
-                            <i class="fas fa-tags fa-sm"></i> <?= $tag->name ?>
-                        </li>
-                    <?php endforeach ?>
-                    </ul>
+                    <div class="col-md-5 order-md-1 ">
+                        <ul class="list-inline">
+                        <?php foreach($post->getTags() as $tag): ?>
+                            <li class="list-inline-item badge rounded-pill bg-info">
+                                <a href="/tags/<?= $tag->tag_id ?>" class="badge rounded-pill bg-info">
+                                    <i class="fas fa-tags fa-sm"></i> <?= $tag->name ?>
+                                </a>
+                            </li>
+                        <?php endforeach ?>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
