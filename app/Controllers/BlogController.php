@@ -14,7 +14,7 @@ class BlogController extends Controller
     public function list()
     {
         $post = new Post;
-        $posts = $post->all();
+        $posts = $post->all(true);
 
         return $this->view('blog/list', compact('posts'));
     }
