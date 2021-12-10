@@ -16,15 +16,11 @@ class UserController extends Controller
     {
         $validator = new Validator($_POST);
         $errors = $validator->validate([
-            'email' => ['required', 'min:3'],
-            'password' => ['required']
+            'email' => ['required', 'email'],
+            'password' => ['required', 'min:6', 'max:255']
         ]);
 
-        if ($errors) {
-            $_SESSION['errors'][] = $errors;
-            header('Location: /login');
-            exit;
-        }
+        Validator::saveErrors($errors);
 
         $user = (new User)->getbyEmail($_POST['email']);
 

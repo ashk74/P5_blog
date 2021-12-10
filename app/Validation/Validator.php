@@ -10,6 +10,7 @@ class Validator
     public function __construct(array $data)
     {
         $this->data = $data;
+        $this->errors = [];
     }
 
     public function validate(array $rules): ?array
@@ -21,8 +22,16 @@ class Validator
                         case 'required':
                             $this->required($name, $this->data[$name]);
                             break;
+                        case 'email':
+                            $this->validEmail($name, $this->data[$name]);
                         case substr($rule, 0, 3) === 'min':
-                            $this->min($name, $this->data[$name], $rule);
+                            $this->length($name, $this->data[$name], $rule);
+                            break;
+                        case substr($rule, 0, 3) === 'max':
+                            $this->length($name, $this->data[$name], $rule);
+                            break;
+
+                        default: // Do nothing
                             break;
                     }
                 }
@@ -31,12 +40,40 @@ class Validator
         return $this->getErrors();
     }
 
+    public static function saveErrors(?array $errors)
+    {
+        if ($errors) {
+            $_SESSION['errors'][] = $errors;
+            header('Location: /login');
+            exit;
+        }
+    }
+
     private function required(string $name, string $value)
     {
         $value = trim($value);
 
         if (!isset($value) || is_null($value) || empty($value)) {
-            $this->errors[$name][] = "{$name} est requis";
+            $this->errors[$name][] = "Le champ : {$name} est requis";
+        }
+    }
+
+    private function length(string $name, string $value, string $rule)
+    {
+        preg_match_all('/(\d+)/', $rule, $matches);
+
+        $limit = (int) $matches[0][0];
+
+        if (substr($rule, 0, 3) === 'min') {
+            if (strlen($value) < $limit) {
+                $this->errors[$name][] = "Le champ : {$name} doit contenir minimum {$limit} caractères";
+            }
+        }
+
+        if (substr($rule, 0, 3) === 'max') {
+            if (strlen($value) > $limit) {
+                $this->errors[$name][] = "Le champ : {$name} doit contenir maximum {$limit} caractères";
+            }
         }
     }
 
@@ -47,7 +84,14 @@ class Validator
         $limit = (int) $matches[0][0];
 
         if (strlen($value) < $limit) {
-            $this->errors[$name][] = "{$name} doit contenir minimum {$limit} caractères";
+            $this->errors[$name][] = "Le champ : {$name} doit contenir minimum {$limit} caractères";
+        }
+    }
+
+    private function validEmail(string $name, string $value)
+    {
+        if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+            $this->errors[$name][] = "Le champ : {$name} doit contenir une adresse email valide";
         }
     }
 
