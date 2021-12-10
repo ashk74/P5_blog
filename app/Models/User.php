@@ -8,6 +8,6 @@ class User extends Model
 
     public function getByEmail(string $email): User
     {
-        return $this->query("SELECT * FROM {$this->table} WHERE email = ?", [$email], true);
+        return $this->selectQuery("SELECT * FROM {$this->table} WHERE email = ?", [$email], true);
     }
 }

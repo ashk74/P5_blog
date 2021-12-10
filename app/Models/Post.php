@@ -26,7 +26,7 @@ class Post extends Model
 
     public function getTags()
     {
-        return $this->query("
+        return $this->selectQuery("
                 SELECT * FROM tag
                 INNER JOIN post_tag ON post_tag.tag_id = tag.id
                 WHERE post_tag.post_id = ?
