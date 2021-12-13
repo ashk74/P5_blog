@@ -40,6 +40,9 @@
                             </li>
                         <?php else: ?>
                             <li class="nav-item">
+                                <a class="nav-link" href="/admin/posts">Administration</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/logout">Déconnexion</a>
                             </li>
                         <?php endif ?>
@@ -50,6 +53,18 @@
         </header>
 
         <section class="container mt-4">
+            <?php if (isset($_SESSION['errors'])): ?>
+                <?php foreach ($_SESSION['errors'] as $errorsArray): ?>
+                    <?php foreach ($errorsArray as $errors): ?>
+                        <div class="alert alert-danger">
+                            <?php foreach($errors as $error): ?>
+                                <li><?= $error ?></li>
+                            <?php endforeach ?>
+                        </div>
+                    <?php endforeach ?>
+                <?php endforeach ?>
+            <?php endif ?>
+            <?php unset($_SESSION['errors']) ?>
             <?= $pageContent ?>
         </section>
 
