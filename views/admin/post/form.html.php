@@ -6,9 +6,29 @@
         <input type="text" name="title" id="title" class="form-control" value="<?= $params['post']->title ?? '' ?>">
     </div>
     <div class="form-group">
+        <label for="chapo">Châpo de l'article</label>
+        <textarea name="chapo" id="chapo" class="form-control" cols="30" rows="5"><?= $params['post']->chapo ?? '' ?></textarea>
+    </div>
+    <div class="form-group">
         <label for="content">Contenu de l'article</label>
         <textarea name="content" id="content" class="form-control" cols="30" rows="10"><?= $params['post']->content ?? '' ?></textarea>
     </div>
+    <div class="for-group">
+        <label for="author">Auteur de l'article</label>
+        <select class="form-select" id="author" name="author">
+            <?php foreach($params['authors'] as $author): ?>
+                <option value="<?= $author->id ?>"
+                <?php if (isset($params['post'])): ?>
+                <!-- TODO trouver ID à utilisé pour récupérer auteur -->
+                    <?php foreach($params['post']->getAuthor() as $postAuthor) {
+                        echo ($author->id === $postAuthor->id) ? 'selected' : '';
+                    }
+                    ?>
+                <?php endif ?>><?= $author->first_name . ' ' . $author->last_name ?></option>
+            <?php endforeach ?>
+        </select>
+    </div>
+
     <div class="for-group">
         <label for="tags">Tags de l'article</label>
         <select multiple class="form-select" id="tags" name="tags[]">

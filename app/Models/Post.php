@@ -33,6 +33,23 @@ class Post extends Model
             ", [$this->id]);
     }
 
+    public function getAuthor(int $id)
+    {
+        return $this->selectQuery("
+                SELECT * FROM user
+                INNER JOIN post ON user.id = post.author
+                WHERE post.id = ?
+            ", [$id]);
+    }
+
+    public function getAuthors()
+    {
+        return $this->selectQuery("
+                SELECT id, CONCAT(first_name, ' ' , last_name) AS author
+                FROM user
+            ");
+    }
+
     public function create(array $data, ?array $relations = null)
     {
         parent::create($data, $relations);
