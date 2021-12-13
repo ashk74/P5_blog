@@ -40,11 +40,11 @@ class Validator
         return $this->getErrors();
     }
 
-    public static function saveErrors(?array $errors)
+    public static function flashErrors(?array $errors, string $path)
     {
         if ($errors) {
             $_SESSION['errors'][] = $errors;
-            header('Location: /login');
+            header("Location: {$path}");
             exit;
         }
     }
@@ -74,17 +74,6 @@ class Validator
             if (strlen($value) > $limit) {
                 $this->errors[$name][] = "Le champ : {$name} doit contenir maximum {$limit} caractères";
             }
-        }
-    }
-
-    private function min(string $name, string $value, string $rule)
-    {
-        preg_match_all('/(\d+)/', $rule, $matches);
-
-        $limit = (int) $matches[0][0];
-
-        if (strlen($value) < $limit) {
-            $this->errors[$name][] = "Le champ : {$name} doit contenir minimum {$limit} caractères";
         }
     }
 

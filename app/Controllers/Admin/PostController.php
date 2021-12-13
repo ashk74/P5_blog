@@ -2,9 +2,11 @@
 
 namespace App\Controllers\Admin;
 
-use App\Controllers\Controller;
-use App\Models\Post;
 use App\Models\Tag;
+use App\Models\Post;
+use App\Models\User;
+use App\Validation\Validator;
+use App\Controllers\Controller;
 
 class PostController extends Controller
 {
@@ -46,13 +48,23 @@ class PostController extends Controller
 
         $post = (new Post)->findById($id);
         $tags = (new Tag)->all();
+        $authors = (new User)->all();
 
-        return $this->view('admin/post/form', compact('post', 'tags'));
+        return $this->view('admin/post/form', compact('post', 'tags', 'authors'));
     }
 
     public function update(int $id)
     {
         $this->isAdmin();
+
+        $validator = new Validator($_POST);
+        $errors = $validator->validate([
+            'title' => ['required', 'min:12', 'max:70'],
+            'chapo' => ['required', 'min:200', 'max:600'],
+            'content' => ['required', 'min:200']
+        ]);
+
+        Validator::flashErrors($errors, "/admin/posts/edit/{$id}");
 
         // TODO Check if $tags is null or array
         $post = new Post;

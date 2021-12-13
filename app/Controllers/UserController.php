@@ -20,7 +20,7 @@ class UserController extends Controller
             'password' => ['required', 'min:6', 'max:255']
         ]);
 
-        Validator::saveErrors($errors);
+        Validator::flashErrors($errors, '/login');
 
         $user = (new User)->getbyEmail($_POST['email']);
 
