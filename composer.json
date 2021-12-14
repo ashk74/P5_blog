@@ -21,6 +21,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "nette/forms": "^3.1"
+        "nette/forms": "^3.1",
+        "twig/twig": "^3.3"
     }
 }

@@ -8,17 +8,6 @@ class Post extends Model
 {
     protected string $table = "post";
 
-    public function getLastUpdate(?bool $withTime = false): string
-    {
-        $dateFormat = 'd/m/Y';
-
-        if ($withTime) {
-            $dateFormat .= ' à H\hi';
-        }
-
-        return $date = (new DateTime(($this->last_update)))->format($dateFormat);
-    }
-
     public function getExcerpt(): string
     {
         return substr($this->chapo, 0, 200) . '...';

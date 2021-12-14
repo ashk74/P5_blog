@@ -1,0 +1,13 @@
+{% macro display() %}
+    {% if _session.errors is not empty %}
+        {% for errorsArray in _session.errors %}
+            {% for errors in errorsArray %}
+                <div class="alert alert-danger">
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}

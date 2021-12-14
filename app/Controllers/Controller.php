@@ -4,30 +4,35 @@ namespace App\Controllers;
 
 abstract class Controller
 {
+    protected $twig = null;
+
     public function __construct()
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+
+        $this->loadTwig();
+        $this->twig->display = 'echo $this->twig->render';
     }
 
-    protected function view(string $path, ?array $params = null)
+    protected function loadTwig(): object
     {
-        $layout = 'layout.php';
-
-        if ($path == 'blog/index') {
-            $layout = 'index.' . $layout;
-        }
-
-        ob_start();
-        require VIEWS . $path . '.html.php';
-        $pageContent = ob_get_clean();
-        require VIEWS . $layout;
+        $loader = new \Twig\Loader\FilesystemLoader(['../templates', '../templates/views', '../templates/macros']);
+        $this->twig = new \Twig\Environment($loader, [
+            'debug' => true,
+            'cache' => false,
+            'autoescape' => 'html'
+        ]);
+        $this->twig->addExtension(new \Twig\Extension\DebugExtension());
+        $this->twig->addGlobal('_get', $_GET);
+        $this->twig->addGlobal('_session', $_SESSION);
+        return $this->twig;
     }
 
     protected function isAdmin()
     {
-        if (isset($_SESSION['auth']) && $_SESSION['auth'] === 1) {
+        if (isset($_SESSION['connected']) && $_SESSION['connected'] === 1) {
             return true;
         } else {
             return header('Location: /login');

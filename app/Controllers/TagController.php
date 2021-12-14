@@ -10,6 +10,8 @@ class TagController extends Controller
     {
         $tag = (new Tag())->findById($id);
 
-        return $this->view('blog/tag', compact('tag'));
+        $this->twig->display('blog/tag.twig', [
+            'tag' => $tag
+        ]);
     }
 }

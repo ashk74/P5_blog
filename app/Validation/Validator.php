@@ -49,6 +49,11 @@ class Validator
         }
     }
 
+    private function getErrors(): ?array
+    {
+        return $this->errors;
+    }
+
     private function required(string $name, string $value)
     {
         $value = trim($value);
@@ -82,10 +87,5 @@ class Validator
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
             $this->errors[$name][] = "Le champ : {$name} doit contenir une adresse email valide";
         }
-    }
-
-    private function getErrors(): ?array
-    {
-        return $this->errors;
     }
 }

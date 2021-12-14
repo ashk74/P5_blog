@@ -8,7 +8,12 @@ class BlogController extends Controller
 {
     public function index()
     {
-        return $this->view('blog/index');
+        $this->twig->display('homepage.twig', [
+            'page_title' => 'Accueil - Blog',
+            'creator_name' => 'Jonathan Secher',
+            'quote' => 'Dès que tu cesses d\'apprendre, tu commences à mourir.',
+            'quote_author' => 'Albert Einstein'
+        ]);
     }
 
     public function list()
@@ -16,7 +21,10 @@ class BlogController extends Controller
         $post = new Post;
         $posts = $post->all(true);
 
-        return $this->view('blog/list', compact('posts'));
+        $this->twig->display('blog/list.twig', [
+            'page_title' => 'Tous les articles - Blog',
+            'posts' => $posts
+        ]);
     }
 
     public function show(int $id)
@@ -24,6 +32,8 @@ class BlogController extends Controller
         $post = new Post;
         $post = $post->findById($id);
 
-        return $this->view('blog/show', compact('post'));
+        $this->twig->display('blog/show.twig', [
+            'post' => $post
+        ]);
     }
 }

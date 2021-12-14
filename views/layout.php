@@ -31,7 +31,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/contact">Contact</a>
                             </li>
-                        <?php if (!isset($_SESSION['auth'])): ?>
+                        <?php if (!isset($_SESSION['connected'])): ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="/signup">Inscription</a>
                             </li>

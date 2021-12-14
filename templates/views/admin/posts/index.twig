@@ -1,0 +1,44 @@
+{% extends "layout.twig" %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block page_content %}
+    <section class="container mt-4">
+        {% if _get.success %}
+            <div class="alert alert-success">Vous êtes connecté</div>
+        {% endif %}
+
+        {% block page_title %}
+            <h1 class="mb-3">{{ page_title }}</h1>
+        {% endblock %}
+
+        <a href="/admin/posts/create" class="btn btn-success" role="button">Créer un article</a>
+
+        <section class="row row-cols-1 mt-4">
+            {% for post in posts %}
+                <div class="col">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <h2 class="col-7 card-title h4"><a href="../post/{{ post.id }}">{{ post.title }}</a></h2>
+                                <div class="col-5 small text-muted text-end">
+                                    Mis à jour le {{ post.last_update|date('d/m/Y à H:i:s')}}
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <a href="/admin/posts/edit/{{ post.id }}" class="btn btn-warning">Modifier</a>
+                                <form action="/admin/posts/delete/{{ post.id }}" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-danger" onclick="return window.confirm('Êtes vous sûr de vouloir supprimer : {{ post.title }} ?')">Supprimer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+    </section>
+{% endblock page_content %}
+
+

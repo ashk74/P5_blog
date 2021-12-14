@@ -20,7 +20,7 @@
                 <option value="<?= $author->id ?>"
                 <?php if (isset($params['post'])): ?>
                 <!-- TODO trouver ID à utilisé pour récupérer auteur -->
-                    <?php foreach($params['post']->getAuthor() as $postAuthor) {
+                    <?php foreach($params['post']->getAuthor($id) as $postAuthor) {
                         echo ($author->id === $postAuthor->id) ? 'selected' : '';
                     }
                     ?>

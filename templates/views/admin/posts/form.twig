@@ -1,0 +1,64 @@
+{% extends "layout.twig" %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="../../../public/css/style.css" />
+{% endblock %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block page_content %}
+    <section class="container col-md-6 py-4">
+        {% block page_title %}
+            <h1 class="mb-4">{{ post.title is not empty ? 'Modifier l\'article' : 'Créer un nouvel article' }}</h1>
+        {% endblock %}
+        <form action="{{ post is not empty ? '/admin/posts/edit/' ~ post.id : '/admin/posts/create' }}" method="POST" class="row g-2">
+            <div class="input-group col-12">
+                <label class="input-group-text fa-unicode" for="inputGroupFile01">&#xf03e; Photo de l'article</label>
+                <input type="file" class="form-control" id="inputGroupFile01">
+            </div>
+            <div class="col-12">
+                <input type="text" name="title" id="title" class="form-control fa-unicode" value="{{ post.title ?? '' }}" placeholder="{{ post.title ?: '&#xf1dc; Titre de l\'article' }}">
+            </div>
+
+            <div class="col-12">
+                <textarea name="chapo" id="chapo" class="form-control fa-unicode" cols="30" rows="5" placeholder="{{ post.chapo ?: '&#xf6e8; Chapô' }}">{{ post.chapo ?? '' }}</textarea>
+            </div>
+            <div class="col-12">
+                <textarea name="content" id="content" class="form-control fa-unicode" cols="30" rows="10" placeholder="{{ post.content ?: '&#xf6e8; Contenu de l\'article' }}">{{ post.content ?? '' }}</textarea>
+            </div>
+            <div class="col-12">
+                <select class="form-select" id="author" name="author" required>
+                    {% for author in authors %}
+                        <option value="{{ author.id }}"
+                        {% if post is not empty %}
+                            {# TODO trouver ID à utilisé pour récupérer auteur #}
+                            {% for post_author in post.getAuthor(author.id) %}
+                                {{ author.id is same as post_author ? 'selected' : '' }}
+                            {% endfor %}
+                        {% endif %}
+                        >{{ author.first_name }} {{ author.last_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12">
+                <select multiple class="form-select" id="tags" name="tags[]" required>
+                    {% for tag in tags %}
+                        <option value="{{ tag.id }}"
+                        {% if post is not empty %}
+                            {% for post_tag in post.getTags() %}
+                                {{ tag.id is same as post_tag.id ? 'selected' : '' }}
+                            {% endfor %}
+                        {% endif %} >{{ tag.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-lg col-12 my-4">{{ post is not empty ? 'Enregistrer les modifications' : 'Enregistrer l\'article' }}</button>
+            </div>
+        </form>
+    </section>
+
+{% endblock page_content %}
+

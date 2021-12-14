@@ -15,7 +15,10 @@ class PostController extends Controller
         $this->isAdmin();
         $posts = (new Post)->all(true);
 
-        return $this->view('admin/post/index', compact('posts'));
+        $this->twig->display('admin/posts/index.twig', [
+            'posts' => $posts,
+            'page_title' => 'Administration des articles'
+        ]);
     }
 
     public function create()
@@ -23,8 +26,12 @@ class PostController extends Controller
         $this->isAdmin();
 
         $tags = (new Tag)->all();
+        $authors = (new User)->all();
 
-        return $this->view('admin/post/form', compact('tags'));
+        $this->twig->display('admin/posts/form.twig', [
+            'tags' => $tags,
+            'authors' => $authors
+        ]);
     }
 
     public function createPost()
@@ -50,7 +57,11 @@ class PostController extends Controller
         $tags = (new Tag)->all();
         $authors = (new User)->all();
 
-        return $this->view('admin/post/form', compact('post', 'tags', 'authors'));
+        $this->twig->display('admin/posts/form.twig', [
+            'post' => $post,
+            'tags' => $tags,
+            'authors' => $authors
+        ]);
     }
 
     public function update(int $id)

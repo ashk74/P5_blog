@@ -9,7 +9,12 @@ class UserController extends Controller
 {
     public function login()
     {
-        return $this->view('auth/login');
+        unset($_SESSION['errors']);
+        $this->twig->display('auth/login.twig', [
+            'form_action' => '/login',
+            'signup_link' => '/signup',
+            'lost_password' => '/reset'
+        ]);
     }
 
     public function loginPost()
@@ -26,7 +31,7 @@ class UserController extends Controller
 
         if (password_verify($_POST['password'], $user->password)) {
             if ($user->is_admin) {
-                $_SESSION['auth'] = (int)$user->is_admin;
+                $_SESSION['connected'] = (int)$user->is_admin;
                 return header('Location: /admin/posts?success=true');
             }
         } else {
