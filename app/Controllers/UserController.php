@@ -75,10 +75,12 @@ class UserController extends Controller
         $user = (new User)->getbyEmail($cleanedData['email']);
 
         if (password_verify($cleanedData['password'], $user->password)) {
-            if ($user->is_admin) {
-                $_SESSION['connected'] = (int)$user->is_admin;
-                return header('Location: /admin/posts?success=true');
-            }
+            $_SESSION['connected'] = 1;
+            $_SESSION['userId'] = (int) $user->id;
+            $_SESSION['isAdmin'] = (int) $user->is_admin;
+            $_SESSION['isValidate'] = (int) $user->is_validate;
+
+            return header('Location: /admin/posts?success=true');
         } else {
             $errors['password'][] = 'Mauvais mot de passe';
         }

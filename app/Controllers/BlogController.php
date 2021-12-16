@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Post;
+use App\Models\Comment;
+use App\Validation\Validator;
 
 class BlogController extends Controller
 {
@@ -18,8 +20,7 @@ class BlogController extends Controller
 
     public function list()
     {
-        $post = new Post;
-        $posts = $post->all(true);
+        $posts = (new Post)->all(true);
 
         $this->twig->display('blog/list.twig', [
             'page_title' => 'Tous les articles - Blog',
@@ -27,13 +28,37 @@ class BlogController extends Controller
         ]);
     }
 
-    public function show(int $id)
+    public function show(int $postId)
     {
-        $post = new Post;
-        $post = $post->findById($id);
+        unset($_SESSION['errors']);
+        $post = (new Post)->findById($postId);
+        $comments = (new Comment)->fetchLinkedComments($postId);
 
         $this->twig->display('blog/show.twig', [
-            'post' => $post
+            'post' => $post,
+            'comments' => $comments
         ]);
+    }
+
+    public function createComment(int $postId)
+    {
+        $validator = new Validator($_POST);
+        $errors = $validator->validate([
+            'content' => ['required', 'min:10']
+        ]);
+
+        $cleanedData = $validator->getData();
+        $cleanedData['author'] = $_SESSION['userId'];
+        $cleanedData['post_id'] = $postId;
+
+        $comment = new Comment;
+
+        $validator->flashErrors($errors, "/post/{$postId}#addComment");
+
+        $result = $comment->create($cleanedData);
+
+        if ($result) {
+            return header("Location: /post/{$postId}#addComment");
+        }
     }
 }

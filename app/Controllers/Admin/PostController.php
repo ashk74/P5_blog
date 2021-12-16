@@ -3,7 +3,6 @@
 namespace App\Controllers\Admin;
 
 use App\Models\Post;
-use App\Models\User;
 use App\Validation\Validator;
 use App\Controllers\Controller;
 
@@ -48,13 +47,13 @@ class PostController extends Controller
 
         $post = new Post;
 
+        $validator->flashErrors($errors, "/admin/posts/create");
+
         $result = $post->create($cleanedData);
 
         if ($result) {
             return header('Location: /admin/posts');
         }
-
-        $validator->flashErrors($errors, "/admin/posts/create");
     }
 
     public function edit(int $id)

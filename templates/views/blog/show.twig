@@ -25,7 +25,7 @@
                                     <span class="text-bold ps-2">{{ post.getAuthor(post.author).0.fullname }}</span>
                                 </div>
                                 <div class="col-md-6 text-md-end">
-                                    <img class="img-fluid rounded-circle" src="https://via.placeholder.com/36x36/593196/FFFFFF?text=10" alt="..." />
+                                    <img class="img-fluid rounded-circle" src="https://via.placeholder.com/36x36/593196/FFFFFF?text={{ comments|length }}" alt="..." />
                                     <span class="text-bold ps-2">commentaires</span>
                                 </div>
                             </div>
@@ -33,6 +33,45 @@
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="col-md-12 mb-4">
+                {% if comments|length > 0 %}
+                    <h2 class="h3 col-md-12 mb-4 ms-3">Commentaires</h2>
+                {% endif %}
+
+                {% for comment in comments %}
+					<div class="row border-bottom pt-4">
+						<div class="col-1 text-end">
+							<img class="img-fluid rounded-circle" src="../public/uploads/user-profile-32x32.png" alt="..." />
+						</div>
+
+                        <div class="col-11 ps-2">
+                            <span class="text-bold">{{ post.getAuthor(comment.author).0.fullname }}</span>
+                            <div class="small text-muted">{{ comment.last_update|date('d/m/Y à H:i') }}</div>
+                            <p>{{ comment.content }}</p>
+                            {% if comment.author == _session.userId %}
+                                <p style="margin-top: -15px;"><a href="#" class="text-danger small">Supprimer</a></p>
+                            {% endif %}
+                        </div>
+					</div>
+                {% endfor %}
+			</div>
+
+            {% if _session.connected %}
+                {% block display_errors %}
+                    {{ parent() }}
+                {% endblock %}
+                <div class="col-md-12 mb-4 ms-3">
+					<h2 class="h3" id="addComment">Laisser un commentaire</h2>
+                    <form action="/post/{{ post.id }}" method="post">
+                        <textarea class="form-control" id="content" name="content" rows="5" cols="50" placeholder="Contenu du commentaire" required></textarea>
+                        <button type="submit" class="col-12 btn btn-info btn-lg">Commenter</button>
+                    </form>
+				</div>
+            {% else %}
+                <div class="text-center mb-4">
+                    <a href="/login" class="btn btn-success col-md-6" role="button">Connectez-vous pour commenter cet article</a>
+                </div>
+            {% endif %}
+		</div>
     </section>
 {% endblock page_content %}
