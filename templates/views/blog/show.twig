@@ -22,7 +22,7 @@
                             <div class="row col-md-7 text-md-end mb-4 order-md-2">
                                 <div class="col-md-7 mb-2">
                                     <img class="img-fluid rounded-circle" src="../public/uploads/user-profile-32x32.png" alt="..." />
-                                    <span class="text-bold ps-3">{{ post.author }}</span>
+                                    <span class="text-bold ps-3">{{ post.getAuthor(post.author).0.fullname }}</span>
                                 </div>
                             </div>
                             <div class="col-md-5 order-md-1 ">

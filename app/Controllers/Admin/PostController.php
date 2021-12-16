@@ -26,7 +26,9 @@ class PostController extends Controller
         $this->isAdmin();
 
         $tags = (new Tag)->all();
-        $authors = (new User)->all();
+        $authors = (new Post)->getAuthors();
+
+        unset($_SESSION['errors']);
 
         $this->twig->display('admin/posts/form.twig', [
             'tags' => $tags,
@@ -38,6 +40,13 @@ class PostController extends Controller
     {
         $this->isAdmin();
 
+        $validator = new Validator($_POST);
+        $errors = $validator->validate([
+            'title' => ['required', 'min:12', 'max:70'],
+            'chapo' => ['required', 'min:200', 'max:600'],
+            'content' => ['required', 'min:400']
+        ]);
+
         $post = new Post;
 
         $tags = array_pop($_POST);
@@ -47,6 +56,8 @@ class PostController extends Controller
         if ($result) {
             return header('Location: /admin/posts');
         }
+
+        $validator->flashErrors($errors, "/admin/posts/create");
     }
 
     public function edit(int $id)
@@ -55,7 +66,9 @@ class PostController extends Controller
 
         $post = (new Post)->findById($id);
         $tags = (new Tag)->all();
-        $authors = (new User)->all();
+        $authors = (new Post)->getAuthors();
+
+        unset($_SESSION['errors']);
 
         $this->twig->display('admin/posts/form.twig', [
             'post' => $post,
@@ -72,10 +85,8 @@ class PostController extends Controller
         $errors = $validator->validate([
             'title' => ['required', 'min:12', 'max:70'],
             'chapo' => ['required', 'min:200', 'max:600'],
-            'content' => ['required', 'min:200']
+            'content' => ['required', 'min:400']
         ]);
-
-        Validator::flashErrors($errors, "/admin/posts/edit/{$id}");
 
         // TODO Check if $tags is null or array
         $post = new Post;
@@ -86,6 +97,8 @@ class PostController extends Controller
         if ($result) {
             return header('Location: /admin/posts');
         }
+
+        $validator->flashErrors($errors, "/admin/posts/edit/{$id}");
     }
 
     public function delete(int $id)

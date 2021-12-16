@@ -40,7 +40,7 @@ class Validator
         return $this->getErrors();
     }
 
-    public static function flashErrors(?array $errors, string $path)
+    public function flashErrors(?array $errors, string $path)
     {
         if ($errors) {
             $_SESSION['errors'][] = $errors;
@@ -65,9 +65,9 @@ class Validator
 
     private function length(string $name, string $value, string $rule)
     {
-        preg_match_all('/(\d+)/', $rule, $matches);
-
-        $limit = (int) $matches[0][0];
+        if (preg_match_all('/(\d+)/', $rule, $matches)) {
+            $limit = (int) $matches[0][0];
+        }
 
         if (substr($rule, 0, 3) === 'min') {
             if (strlen($value) < $limit) {

@@ -14,15 +14,20 @@ define('SCRIPTS', dirname($_SERVER['SCRIPT_NAME']) . DIRECTORY_SEPARATOR);
 
 $router = new Router($_GET['url']);
 
+// Posts controllers
 $router->get('/', 'App\Controllers\BlogController@index');
 $router->get('/posts', 'App\Controllers\BlogController@list');
 $router->get('/post/:id', 'App\Controllers\BlogController@show');
 $router->get('/tags/:id', 'App\Controllers\TagController@tag');
 
+// Users controllers
+$router->get('/signup', 'App\Controllers\UserController@signup');
+$router->post('/signup', 'App\Controllers\UserController@signupPost');
 $router->get('/login', 'App\Controllers\UserController@login');
 $router->post('/login', 'App\Controllers\UserController@loginPost');
 $router->get('/logout', 'App\Controllers\UserController@logout');
 
+// Admin controllers
 $router->get('/admin/posts', 'App\Controllers\Admin\PostController@list');
 $router->get('/admin/posts/create', 'App\Controllers\Admin\PostController@create');
 $router->post('/admin/posts/create', 'App\Controllers\Admin\PostController@createPost');
