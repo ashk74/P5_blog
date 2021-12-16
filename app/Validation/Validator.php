@@ -9,8 +9,17 @@ class Validator
 
     public function __construct(array $data)
     {
-        $this->data = $data;
+        $this->data = self::sanitize($data);
         $this->errors = [];
+    }
+
+    private static function sanitize(array $data) {
+        foreach ($data as $key => $value) {
+            $data[$key] = stripslashes($data[$key]);
+            $data[$key] = strip_tags($data[$key]);
+            $data[$key] = trim($data[$key]);
+        }
+        return $data;
     }
 
     public function validate(array $rules): ?array
@@ -87,5 +96,10 @@ class Validator
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
             $this->errors[$name][] = "Le champ : {$name} doit contenir une adresse email valide";
         }
+    }
+
+    public function getData()
+    {
+        return $this->data;
     }
 }

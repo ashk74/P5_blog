@@ -30,11 +30,13 @@ class UserController extends Controller
             'checkPassword' => ['required', 'min:6', 'max:255'],
         ]);
 
-        $userExist = (new User)->alreadyExist($_POST['email']);
+        $cleanedData = $validator->getData();
+
+        $userExist = (new User)->alreadyExist($cleanedData['email']);
 
         if (!$userExist) {
-            $this->userInfos = array_slice($_POST, -5, 3);
-            $passwords = array_slice($_POST, -2, 2);
+            $this->userInfos = array_slice($cleanedData, -5, 3);
+            $passwords = array_slice($cleanedData, -2, 2);
 
             if ($passwords['password'] === $passwords['checkPassword']) {
                 $this->userInfos['password'] = password_hash($passwords['password'], PASSWORD_BCRYPT, ['cost' => 9]);
@@ -68,9 +70,11 @@ class UserController extends Controller
             'password' => ['required', 'min:6', 'max:255']
         ]);
 
-        $user = (new User)->getbyEmail($_POST['email']);
+        $cleanedData = $validator->getData();
 
-        if (password_verify($_POST['password'], $user->password)) {
+        $user = (new User)->getbyEmail($cleanedData['email']);
+
+        if (password_verify($cleanedData['password'], $user->password)) {
             if ($user->is_admin) {
                 $_SESSION['connected'] = (int)$user->is_admin;
                 return header('Location: /admin/posts?success=true');

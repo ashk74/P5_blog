@@ -69,7 +69,7 @@ abstract class Model
         return $stmt->execute($param);
     }
 
-    public function create(array $data, ?array $relations = null)
+    public function create(array $data)
     {
         $firstParenthesis = "";
         $secondParenthesis = "";
@@ -84,7 +84,7 @@ abstract class Model
         return $this->editQuery("INSERT INTO {$this->table} ($firstParenthesis) VALUES ($secondParenthesis)", $data);
     }
 
-    public function update(int $id, array $data, ?array $relations = null)
+    public function update(int $id, array $data)
     {
         $sqlRequestPart = "";
         $i = 1;

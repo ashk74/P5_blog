@@ -18,7 +18,6 @@ $router = new Router($_GET['url']);
 $router->get('/', 'App\Controllers\BlogController@index');
 $router->get('/posts', 'App\Controllers\BlogController@list');
 $router->get('/post/:id', 'App\Controllers\BlogController@show');
-$router->get('/tags/:id', 'App\Controllers\TagController@tag');
 
 // Users controllers
 $router->get('/signup', 'App\Controllers\UserController@signup');

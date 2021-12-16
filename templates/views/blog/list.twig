@@ -2,12 +2,6 @@
 
 {% block page_content %}
     <section class="container mt-4">
-        <section class="row">
-            <div class="input-group col-12 mb-4">
-                <input type="text" class="form-control" placeholder="Rechercher">
-                <button class="btn btn-lg btn-primary" type="button" id="button-addon2"><i class="fas fa-search fa-sm  "></i></button>
-            </div>
-        </section>
         <section class="row row-cols-1 row-cols-md-2">
             {% for post in posts %}
                 <div class="col">
@@ -20,17 +14,6 @@
                                 <div class="col-5 small text-muted text-end">Mis à jour le {{ post.last_update|date('d/m/Y') }}</div>
                             </div>
                             <p class="card-text text-justify">{{ post.Excerpt() }}</p>
-                            <div>
-                                <ul class="list-inline">
-                                    {% for tag in post.Tags() %}
-                                        <li class="list-inline-item">
-                                            <a href="/tags/{{ tag.tag_id }}" class="badge rounded-pill bg-info">
-                                                <i class="fas fa-tags fa-sm"></i> {{ tag.name }}
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -30,7 +30,7 @@ abstract class Controller
         return $this->twig;
     }
 
-    protected function isAdmin()
+    protected function isConnected()
     {
         if (isset($_SESSION['connected']) && $_SESSION['connected'] === 1) {
             return true;

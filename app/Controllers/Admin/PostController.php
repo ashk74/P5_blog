@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Admin;
 
-use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
 use App\Validation\Validator;
@@ -12,7 +11,7 @@ class PostController extends Controller
 {
     public function list()
     {
-        $this->isAdmin();
+        $this->isConnected();
         $posts = (new Post)->all(true);
 
         $this->twig->display('admin/posts/index.twig', [
@@ -23,22 +22,20 @@ class PostController extends Controller
 
     public function create()
     {
-        $this->isAdmin();
+        $this->isConnected();
 
-        $tags = (new Tag)->all();
         $authors = (new Post)->getAuthors();
 
         unset($_SESSION['errors']);
 
         $this->twig->display('admin/posts/form.twig', [
-            'tags' => $tags,
             'authors' => $authors
         ]);
     }
 
     public function createPost()
     {
-        $this->isAdmin();
+        $this->isConnected();
 
         $validator = new Validator($_POST);
         $errors = $validator->validate([
@@ -47,11 +44,11 @@ class PostController extends Controller
             'content' => ['required', 'min:400']
         ]);
 
+        $cleanedData = $validator->getData();
+
         $post = new Post;
 
-        $tags = array_pop($_POST);
-
-        $result = $post->create($_POST, $tags);
+        $result = $post->create($cleanedData);
 
         if ($result) {
             return header('Location: /admin/posts');
@@ -62,24 +59,22 @@ class PostController extends Controller
 
     public function edit(int $id)
     {
-        $this->isAdmin();
+        $this->isConnected();
 
         $post = (new Post)->findById($id);
-        $tags = (new Tag)->all();
         $authors = (new Post)->getAuthors();
 
         unset($_SESSION['errors']);
 
         $this->twig->display('admin/posts/form.twig', [
             'post' => $post,
-            'tags' => $tags,
             'authors' => $authors
         ]);
     }
 
     public function update(int $id)
     {
-        $this->isAdmin();
+        $this->isConnected();
 
         $validator = new Validator($_POST);
         $errors = $validator->validate([
@@ -88,11 +83,11 @@ class PostController extends Controller
             'content' => ['required', 'min:400']
         ]);
 
-        // TODO Check if $tags is null or array
-        $post = new Post;
-        $tags = array_pop($_POST);
+        $cleanedData = $validator->getData();
 
-        $result = $post->update($id, $_POST, $tags);
+        $post = new Post;
+
+        $result = $post->update($id, $cleanedData);
 
         if ($result) {
             return header('Location: /admin/posts');
@@ -103,7 +98,7 @@ class PostController extends Controller
 
     public function delete(int $id)
     {
-        $this->isAdmin();
+        $this->isConnected();
 
         $post = (new Post);
         $result = $post->delete($id);

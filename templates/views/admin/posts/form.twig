@@ -44,19 +44,6 @@
                 </select>
             </div>
             <div class="col-12">
-                <label for="tags">Tags <small class="text-muted">(Ctrl + clic pour une sélection multiple)</small></label>
-                <select multiple class="form-select" id="tags" name="tags[]" required>
-                    {% for tag in tags %}
-                        <option value="{{ tag.id }}"
-                        {% if post is not empty %}
-                            {% for post_tag in post.getTags() %}
-                                {{ tag.id is same as post_tag.id ? 'selected' : '' }}
-                            {% endfor %}
-                        {% endif %} >{{ tag.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-12">
                 <button type="submit" class="btn btn-primary btn-lg col-12 my-4">{{ post is not empty ? 'Enregistrer les modifications' : 'Enregistrer l\'article' }}</button>
             </div>
         </form>

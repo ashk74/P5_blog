@@ -19,22 +19,15 @@
                         <p class="card-text text-bold text-justify">{{ post.chapo }}</p>
                         <p class="card-text text-justify">{{ post.content }}</p>
                         <div class="row border-top pt-3 d-flex">
-                            <div class="row col-md-7 text-md-end mb-4 order-md-2">
-                                <div class="col-md-7 mb-2">
+                            <div class="row col-md-12 order-md-2">
+                                <div class="col-md-6 mb-2">
                                     <img class="img-fluid rounded-circle" src="../public/uploads/user-profile-32x32.png" alt="..." />
-                                    <span class="text-bold ps-3">{{ post.getAuthor(post.author).0.fullname }}</span>
+                                    <span class="text-bold ps-2">{{ post.getAuthor(post.author).0.fullname }}</span>
                                 </div>
-                            </div>
-                            <div class="col-md-5 order-md-1 ">
-                                <ul class="list-inline">
-                                    {% for tag in post.Tags() %}
-                                        <li class="list-inline-item">
-                                            <a href="/tags/{{ tag.tag_id }}" class="badge rounded-pill bg-info">
-                                                <i class="fas fa-tags fa-sm"></i> {{ tag.name }}
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+                                <div class="col-md-6 text-md-end">
+                                    <img class="img-fluid rounded-circle" src="https://via.placeholder.com/36x36/593196/FFFFFF?text=10" alt="..." />
+                                    <span class="text-bold ps-2">commentaires</span>
+                                </div>
                             </div>
                         </div>
                     </div>
