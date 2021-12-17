@@ -40,7 +40,7 @@ class BlogController extends Controller
         ]);
     }
 
-    public function createComment(int $postId)
+    /* public function createComment(int $postId)
     {
         $validator = new Validator($_POST);
         $errors = $validator->validate([
@@ -60,5 +60,5 @@ class BlogController extends Controller
         if ($result) {
             return header("Location: /post/{$postId}#addComment");
         }
-    }
+    } */
 }

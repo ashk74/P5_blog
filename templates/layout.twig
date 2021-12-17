@@ -31,7 +31,14 @@
                             {{ nav_item.main('/contact', 'Contact') }}
 
                             {% if _session.connected %}
-                                {{ nav_item.main('/admin/posts', 'Administration') }}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
+                                    <ul class="dropdown-menu bg-primary" aria-labelledby="navbarDropdown">
+                                        {{ nav_item.main('/admin/posts', 'Gestion des articles', 'dropdown-item') }}
+                                        {{ nav_item.main('/admin/comments', 'Modération des commentaires', 'dropdown-item') }}
+                                        {{ nav_item.main('/admin/posts/create', 'Création d\'un article', 'dropdown-item') }}
+                                    </ul>
+                                </li>
                                 {{ nav_item.main('/logout', 'Déconnexion') }}
                             {% else %}
                                 {{ nav_item.main('/signup', 'Inscription') }}
@@ -99,6 +106,6 @@
 
         <script  src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-        <script src="https://kit.fontawesome.com/54ac40310e.js" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/e1fcaad2db.js" crossorigin="anonymous"></script>
     </body>
 </html>

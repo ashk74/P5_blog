@@ -84,9 +84,7 @@ class PostController extends Controller
 
         $cleanedData = $validator->getData();
 
-        $post = new Post;
-
-        $result = $post->update($id, $cleanedData);
+        $result = (new Post)->update($id, $cleanedData);
 
         if ($result) {
             return header('Location: /admin/posts');

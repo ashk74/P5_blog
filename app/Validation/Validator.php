@@ -39,7 +39,6 @@ class Validator
                         case substr($rule, 0, 3) === 'max':
                             $this->length($name, $this->data[$name], $rule);
                             break;
-
                         default: // Do nothing
                             break;
                     }

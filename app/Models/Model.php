@@ -105,4 +105,18 @@ abstract class Model
     {
         return $this->editQuery("DELETE FROM {$this->table} WHERE id = ?", [$id]);
     }
+
+    public function getAuthor(int $id)
+    {
+        return $this->selectQuery("
+                SELECT CONCAT(first_name, ' ' , last_name) AS fullname
+                FROM user
+                WHERE user.id = ?
+            ", [$id]);
+    }
+
+    public function getEmail(int $id): object
+    {
+        return $this->selectQuery("SELECT email FROM user WHERE id = ?", [$id], true);
+    }
 }

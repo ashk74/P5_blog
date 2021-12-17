@@ -10,6 +10,6 @@ class Comment extends Model
 
     public function fetchLinkedComments(int $postId): array
     {
-        return $this->selectQuery("SELECT * FROM comment WHERE post_id = ?", [$postId]);
+        return $this->selectQuery("SELECT * FROM {$this->table} WHERE post_id = ?", [$postId]);
     }
 }

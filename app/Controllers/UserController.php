@@ -79,6 +79,7 @@ class UserController extends Controller
             $_SESSION['userId'] = (int) $user->id;
             $_SESSION['isAdmin'] = (int) $user->is_admin;
             $_SESSION['isValidate'] = (int) $user->is_validate;
+            $_SESSION['fullname'] = (string) $user->first_name . ' ' . $user->last_name;
 
             return header('Location: /admin/posts?success=true');
         } else {

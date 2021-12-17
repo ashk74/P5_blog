@@ -38,4 +38,14 @@ abstract class Controller
             return header('Location: /login');
         }
     }
+
+    protected function isAdmin()
+    {
+        return (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === 1) ? true : false;
+    }
+
+    protected function isValidate()
+    {
+        return (isset($_SESSION['isValidate']) && $_SESSION['isValidate'] === 1) ? true : false;
+    }
 }
