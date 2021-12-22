@@ -1,0 +1,55 @@
+{% extends "layout.twig" %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block page_content %}
+    <section class="container mt-4">
+        {% if _get.success %}
+            <div class="alert alert-success">Vous êtes connecté</div>
+        {% endif %}
+
+        {% block page_title %}
+            <h1 class="mb-3">{{ page_title }}</h1>
+        {% endblock %}
+
+        <a href="/admin/posts/create" class="btn btn-success" role="button">Créer un article</a>
+
+        <section class="container col-md-12 py-4">
+            {% for post in posts %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-2 mb-3">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="col-12">
+                                    <img src="../../../../public/images/{{ post.photo }}" class="img-fluid col-12" alt="...">
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card-body">
+                                    <h2 class="card-title h4 mb-2"><a href="../post/{{ post.id }}">{{ post.title }}</a></h2>
+                                    <p>{{ post.chapo }}</p>
+                                    <p class="card-text small text-muted">Mis à jour le : {{ post.last_update|date('d/m/Y à H:i') }}</p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a href="/admin/posts/edit/{{ post.id }}" class="btn btn-outline-warning btn-lg col-12">Modifier</a>
+                                        </div>
+
+                                        <form action="/admin/posts/delete/{{ post.id }}" method="POST" class="col-md-6">
+                                            <button type="submit" class="btn btn-outline-danger btn-lg col-12" onclick="return window.confirm('Êtes vous sûr de vouloir supprimer : {{ post.title }} ?')">Supprimer</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </section>
+{% endblock page_content %}
+
+

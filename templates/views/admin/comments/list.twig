@@ -1,0 +1,65 @@
+{% extends "layout.twig" %}
+
+
+{% block page_content %}
+    <section class="container mt-4">
+
+        {% block page_title %}
+            <h1 class="mb-3">{{ page_title }}</h1>
+        {% endblock %}
+
+        <section class="container col-md-12 py-4">
+			<div class="row">
+                <h1 class="h2 pb-4">En attente de modération</h1>
+			</div>
+            {% for comment in comments %}
+                {% if comment.is_moderate == 0 %}
+                    <div class="container-fluid pb-2">
+                        <div class="row d-flex border-top border-start border-end py-3">
+                            <div class="col-md-3 order-md-1 border-end">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <img class="img-fluid rounded-circle" src="../public/uploads/user-profile.png" alt="..." />
+                                        </div>
+
+                                        <div class="col-10 mb-3">
+                                            <span class="text-bold">{{ comment.getAuthor(comment.author).0.fullname }}</span>
+                                            <div>{{ comment.getEmail(comment.author).email }}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-5 order-md-2 border-end text-justify">
+                                {{ comment.content|nl2br }}
+                            </div>
+                            <div class="col-md-2 mt-3 mt-md-0 order-md-4 small text-muted text-md-center">
+                                {{ comment.last_update|date('d/m/Y à H:i') }}
+                            </div>
+                            <div class="col-md-2 order-md-3 border-end text-md-center">
+                                <div class="row">
+                                    <div class="col-8 col-md-12 mt-3 mt-md-0">
+                                        <div class="pb-2 border-bottom">{{ post.findById(comment.post_id).title }}</div>
+                                        <div class="pt-2"><a href="/post/{{ comment.post_id }}">Voir l'article</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row border-bottom border-start border-end p-2 border-top">
+
+                            <form action="/admin/comments/delete/{{ comment.id }}" method="POST" class="row d-flex justify-content-md-end m-2">
+                                <button type="submit" class="col-md-2 btn btn-sm btn-outline-danger btn-lg rounded-3 me-2 mb-2 mb-md-0">Supprimer</button>
+                            </form>
+                            <form action="/admin/comments/moderate/{{ comment.id }}" method="POST" class="row d-flex justify-content-md-end m-2">
+                                <button type="submit" class="col-md-2 btn btn-sm btn-outline-success btn-lg rounded-3">Valider</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+		</section>
+    </section>
+{% endblock page_content %}
+
+

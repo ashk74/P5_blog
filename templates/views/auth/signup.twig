@@ -1,0 +1,44 @@
+{% extends "layout.twig" %}
+
+{% block page_content %}
+    <section class="py-4 bg-light">
+        {% if _get.success %}
+            <div class="alert alert-success text-center">Votre compte a bien été créé. Connectez-vous <a href="/login">ici</a></div>
+        {% endif %}
+        <div class="container col-md-6 px-4 my-4">
+            <div class="text-center mb-5">
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3">
+                    <i class="fas fa-sign-in-alt fa-sm"></i>
+                </div>
+                {% block page_title %}<h2 class="fw-bolder">Inscription</h2>{% endblock %}
+            </div>
+            {% block display_errors %}
+                {{ parent() }}
+            {% endblock %}
+            <form action="{{ form_action }}" method="POST"  class="row g-2 pb-4 border-bottom">
+                <div class="col-md-6">
+                    <input type="text" id="firstname" name="first_name" class="form-control fa-unicode" placeholder="&#xf007; Prénom" required/>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" id="lastname" name="last_name" class="form-control fa-unicode" placeholder="&#xf007; Nom" required/>
+                </div>
+                <div class="col-12">
+                    <input type="email" id="email" name="email" class="form-control fa-unicode" placeholder="&#xf1d8; Email" required/>
+                </div>
+                <div class="col-12">
+                    <input type="password" id="password" name="password" class="form-control fa-unicode" placeholder="&#xf084; Mot de passe" required/>
+                </div>
+                <div class="col-12">
+                    <input type="password" id="checkPassword" name="checkPassword" class="form-control fa-unicode" placeholder="&#xf084; Confirmation mot de passe" required/>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="col-12 btn btn-success btn-lg">Créer un compte</button>
+                </div>
+            </form>
+            <div class="mt-4">
+                <a class="col-12 btn btn-info btn-lg" href="{{ login_link }}" role="button">Se connecter</a>
+                <p class="text-center pt-3"><a href="{{ lost_password }}">Mot de passe oublié ?</a></p>
+            </div>
+        </div>
+    </section>
+{% endblock page_content %}

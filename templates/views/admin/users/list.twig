@@ -1,0 +1,76 @@
+{% extends "layout.twig" %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block page_content %}
+    <section class="container mt-4">
+        {% block page_title %}
+            <h1 class="mb-3">{{ page_subtitle }}</h1>
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Filtres
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="/admin/users">Tous les utilisateurs</a></li>
+                    <li><a class="dropdown-item" href="/admin/users/no-validate">En attente de validation</a></li>
+                    <li><a class="dropdown-item" href="/admin/users/validate">Utilisateurs validés</a></li>
+                    <li><a class="dropdown-item" href="/admin/users/admins">Liste des administrateurs</a></li>
+                </ul>
+            </div>
+
+        {% endblock %}
+
+        <section class="container col-md-12 py-4">
+            {% for user in users %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-2 mb-3">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="col-12">
+                                    <img src="../../../../public/uploads/user-profile.png" class="img-fluid col-12" alt="...">
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card-body">
+                                    <h2 class="card-title h4 mb-2">{{ '%s %s'|format(user.first_name, user.last_name) }}</h2>
+                                    <p class="card-text">Adresse email : {{ user.email }}</p>
+                                    <p class="card-text">Inscrit le : {{ user.registration_date|date('d/m/Y à H:i') }}</p>
+                                    <div>
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item badge rounded-pill {{ user.is_admin ? 'bg-success' : 'bg-danger' }}">
+                                                <i class="fas fa-user-tie fa-sm"></i> Admin
+                                            </li>
+                                            <li class="list-inline-item badge rounded-pill {{ user.is_validate ? 'bg-success' : 'bg-danger' }}">
+                                                <i class="fas fa-check fa-sm"></i> Validé
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="row">
+                                        {% if user.is_validate %}
+                                            <form action="/admin/users/update-admin-role/{{ user.id }}" method="POST" class="col-md-6">
+                                                <button type="submit" class="btn btn-outline-warning btn-lg col-12 mb-2" onclick="return window.confirm('Êtes vous sûr de vouloir modifier le rôle administrateur de : {{ '%s %s'|format(user.first_name, user.last_name) }} ?')">{{ user.is_admin ? 'Retirer' : 'Ajouter' }} droit administrateur</button>
+                                            </form>
+                                        {% else %}
+                                            <form action="/admin/users/validate/{{ user.id }}" method="POST" class="col-md-6">
+                                                <button type="submit" class="btn btn-outline-success btn-lg col-12" onclick="return window.confirm('Êtes vous sûr de vouloir valider : {{ '%s %s'|format(user.first_name, user.last_name) }} ?')">Valider</button>
+                                            </form>
+                                        {% endif %}
+
+                                        <form action="/admin/users/delete/{{ user.id }}" method="POST" class="col-md-6">
+                                            <button type="submit" class="btn btn-outline-danger btn-lg col-12" onclick="return window.confirm('Êtes vous sûr de vouloir supprimer : {{ '%s %s'|format(user.first_name, user.last_name) }} ?')">Supprimer</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </section>
+{% endblock page_content %}
+
