@@ -11,7 +11,7 @@ class PostController extends Controller
     public function list()
     {
         $this->isConnected();
-        $this->isAdmin();
+        $this->isValidate();
 
         $posts = (new Post)->all(true);
 
@@ -24,7 +24,7 @@ class PostController extends Controller
     public function create()
     {
         $this->isConnected();
-        $this->isAdmin();
+        $this->isValidate();
 
         $authors = (new Post)->getAuthors();
 
@@ -38,7 +38,7 @@ class PostController extends Controller
     public function createPost()
     {
         $this->isConnected();
-        $this->isAdmin();
+        $this->isValidate();
 
         $validator = new Validator($_POST);
         $errors = $validator->validate([
@@ -63,7 +63,7 @@ class PostController extends Controller
     public function edit(int $id)
     {
         $this->isConnected();
-        $this->isAdmin();
+        $this->isValidate();
 
         $post = (new Post)->findById($id);
         $authors = (new Post)->getAuthors();
@@ -79,7 +79,7 @@ class PostController extends Controller
     public function update(int $id)
     {
         $this->isConnected();
-        $this->isAdmin();
+        $this->isValidate();
 
         $validator = new Validator($_POST);
         $errors = $validator->validate([
@@ -102,7 +102,7 @@ class PostController extends Controller
     public function delete(int $id)
     {
         $this->isConnected();
-        $this->isAdmin();
+        $this->isValidate();
 
         $result = (new Post)->delete($id);
 

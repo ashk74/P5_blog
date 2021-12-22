@@ -32,7 +32,7 @@ class UserController extends Controller
 
         $cleanedData = $validator->getData();
 
-        $userExist = (new User)->alreadyExist($cleanedData['email']);
+        $userExist = (new User)->emailExist($cleanedData['email']);
 
         if (!$userExist) {
             $this->userInfos = array_slice($cleanedData, -5, 3);
@@ -72,7 +72,13 @@ class UserController extends Controller
 
         $cleanedData = $validator->getData();
 
-        $user = (new User)->getbyEmail($cleanedData['email']);
+        $user = new User;
+
+        if (!$user->emailExist($cleanedData['email'])) {
+            $errors['password'][] = 'Aucun compte existant avec cette adresse email';
+        }
+
+        $user = $user->getbyEmail($cleanedData['email']);
 
         if (password_verify($cleanedData['password'], $user->password)) {
             $_SESSION['connected'] = 1;
@@ -81,7 +87,7 @@ class UserController extends Controller
             $_SESSION['is_validate'] = (int) $user->is_validate;
             $_SESSION['fullname'] = (string) $user->first_name . ' ' . $user->last_name;
 
-            return header('Location: /admin/posts?success=true');
+            ($user->is_validate) ? header('Location: /admin/posts?success=true') : header('Location: /');
         } else {
             $errors['password'][] = 'Mauvais mot de passe';
         }

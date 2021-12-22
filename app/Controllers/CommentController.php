@@ -9,6 +9,8 @@ class CommentController extends Controller
 {
     public function createComment(int $postId)
     {
+        $this->isConnected();
+
         $validator = new Validator($_POST);
         $errors = $validator->validate([
             'content' => ['required', 'min:10']
@@ -25,18 +27,8 @@ class CommentController extends Controller
         $result = $comment->create($cleanedData);
 
         if ($result) {
-            return header("Location: /post/{$postId}#addComment");
+            return header("Location: /post/{$postId}?success=true/#addComment");
         }
-    }
-
-    public function list()
-    {
-        $comments = (new Comment)->all(true);
-
-        $this->twig->display('admin/comments/list.twig', [
-            'page_title' => 'Modération des commentaires',
-            'comments' => $comments
-        ]);
     }
 
     public function delete(int $id)

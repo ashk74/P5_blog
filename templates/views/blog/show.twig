@@ -65,6 +65,9 @@
                 {% block display_errors %}
                     {{ parent() }}
                 {% endblock %}
+                {% if _get.success %}
+                    <div class="alert alert-success">Votre commentaire est en attente de modération</div>
+                {% endif %}
                 <div class="col-md-12 mb-4 ms-3">
 					<h2 class="h3" id="addComment">Laisser un commentaire</h2>
                     <form action="/post/{{ post.id }}" method="post">

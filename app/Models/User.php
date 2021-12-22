@@ -23,7 +23,7 @@ class User extends Model
         return $this->selectQuery("SELECT * FROM {$this->table} WHERE email = ?", [$email], true);
     }
 
-    public function alreadyExist(string $email): bool
+    public function emailExist(string $email): bool
     {
         return $this->selectQuery("SELECT email FROM {$this->table} WHERE email = ?", [$email], true) ? true : false;
     }

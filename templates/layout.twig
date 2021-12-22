@@ -29,14 +29,18 @@
                             {{ nav_item.main('/posts', 'Blog') }}
 
                             {% if _session.connected %}
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
-                                    <ul class="dropdown-menu bg-primary" aria-labelledby="navbarDropdown">
-                                        {{ nav_item.main('/admin/posts', 'Tous les articles', 'dropdown-item') }}
-                                        {{ nav_item.main('/admin/users', 'Liste des utilisateurs', 'dropdown-item') }}
-                                        {{ nav_item.main('/admin/comments', 'Modération des commentaires', 'dropdown-item') }}
-                                    </ul>
-                                </li>
+                                {% if _session.is_validate %}
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
+                                        <ul class="dropdown-menu bg-primary" aria-labelledby="navbarDropdown">
+                                            {{ nav_item.main('/admin/posts', 'Tous les articles', 'dropdown-item') }}
+                                            {% if _session.is_admin %}
+                                                {{ nav_item.main('/admin/users', 'Liste des utilisateurs', 'dropdown-item') }}
+                                                {{ nav_item.main('/admin/comments', 'Modération des commentaires', 'dropdown-item') }}
+                                            {% endif %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
                                 {{ nav_item.main('/logout', 'Déconnexion') }}
                             {% else %}
                                 {{ nav_item.main('/signup', 'Inscription') }}
@@ -73,9 +77,13 @@
                         <h3 class="text-uppercase">Administration</h3>
                         <ul class="footer-items list-unstyled">
                             {% if _session.connected %}
-                                {{ nav_item.footer('/admin/posts', 'Tous les articles', 'dropdown-item') }}
-                                {{ nav_item.footer('/admin/users', 'Liste des utilisateurs', 'dropdown-item') }}
-                                {{ nav_item.footer('/admin/comments', 'Modération des commentaires', 'dropdown-item') }}
+                                {% if _session.is_validate %}
+                                    {{ nav_item.footer('/admin/posts', 'Tous les articles', 'dropdown-item') }}
+                                {% endif %}
+                                {% if _session.is_admin %}
+                                    {{ nav_item.footer('/admin/users', 'Liste des utilisateurs', 'dropdown-item') }}
+                                    {{ nav_item.footer('/admin/comments', 'Modération des commentaires', 'dropdown-item') }}
+                                {% endif %}
                                 {{ nav_item.footer('/logout', 'Déconnexion') }}
                             {% else %}
                                 {{ nav_item.footer('/signup', 'Inscription') }}
