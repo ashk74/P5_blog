@@ -10,6 +10,8 @@ class UserController extends Controller
     public function list()
     {
         $this->isConnected();
+        $this->isAdmin();
+
         $users = (new User)->all();
 
         $this->twig->display('admin/users/list.twig', [
@@ -22,6 +24,8 @@ class UserController extends Controller
     public function listNoValidate()
     {
         $this->isConnected();
+        $this->isAdmin();
+
         $users = (new User)->listValidate(false);
 
         $this->twig->display('admin/users/list.twig', [
@@ -34,6 +38,8 @@ class UserController extends Controller
     public function listValidate()
     {
         $this->isConnected();
+        $this->isAdmin();
+
         $users = (new User)->listValidate();
 
         $this->twig->display('admin/users/list.twig', [
@@ -46,6 +52,8 @@ class UserController extends Controller
     public function listAdmin()
     {
         $this->isConnected();
+        $this->isAdmin();
+
         $users = (new User)->listAdmin();
 
         $this->twig->display('admin/users/list.twig', [
@@ -58,6 +66,7 @@ class UserController extends Controller
     public function delete(int $id)
     {
         $this->isConnected();
+        $this->isAdmin();
 
         $user = (new User);
         $result = $user->delete($id);
@@ -70,6 +79,7 @@ class UserController extends Controller
     public function updateAdminRole(int $id)
     {
         $this->isConnected();
+        $this->isAdmin();
 
         $user = new User;
         $isAdmin = $user->findById($id)->is_admin;
@@ -83,6 +93,7 @@ class UserController extends Controller
     public function validateUser(int $id)
     {
         $this->isConnected();
+        $this->isAdmin();
 
         $user = new User;
         $result = $user->update($id, ['is_validate' => 1]);

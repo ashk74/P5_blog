@@ -10,7 +10,7 @@
                 <div class="col">
                     <!-- Blog article 1 -->
                     <div class="card mb-4">
-                        <a href="post/{{ post.id }}"><img class="card-img-top" src="public/images/{{ post.photo }}" alt="..." /></a>
+                        <a href="post/{{ post.id }}"><img class="card-img-top" src="{{ constant('IMAGES') }}{{ post.photo }}" alt="..." /></a>
                         <div class="card-body">
                             <div class="row">
                                 <h2 class="col-7 card-title h4">{{ post.title }}</h2>

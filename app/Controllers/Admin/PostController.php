@@ -11,6 +11,8 @@ class PostController extends Controller
     public function list()
     {
         $this->isConnected();
+        $this->isAdmin();
+
         $posts = (new Post)->all(true);
 
         $this->twig->display('admin/posts/list.twig', [
@@ -22,6 +24,7 @@ class PostController extends Controller
     public function create()
     {
         $this->isConnected();
+        $this->isAdmin();
 
         $authors = (new Post)->getAuthors();
 
@@ -35,6 +38,7 @@ class PostController extends Controller
     public function createPost()
     {
         $this->isConnected();
+        $this->isAdmin();
 
         $validator = new Validator($_POST);
         $errors = $validator->validate([
@@ -59,6 +63,7 @@ class PostController extends Controller
     public function edit(int $id)
     {
         $this->isConnected();
+        $this->isAdmin();
 
         $post = (new Post)->findById($id);
         $authors = (new Post)->getAuthors();
@@ -74,6 +79,7 @@ class PostController extends Controller
     public function update(int $id)
     {
         $this->isConnected();
+        $this->isAdmin();
 
         $validator = new Validator($_POST);
         $errors = $validator->validate([
@@ -96,9 +102,9 @@ class PostController extends Controller
     public function delete(int $id)
     {
         $this->isConnected();
+        $this->isAdmin();
 
-        $post = (new Post);
-        $result = $post->delete($id);
+        $result = (new Post)->delete($id);
 
         if ($result) {
             return header('Location: /admin/posts');

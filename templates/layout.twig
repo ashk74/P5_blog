@@ -6,7 +6,8 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <meta name="Description" content="Enter your description here" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.1.3/dist/pulse/bootstrap.min.css" integrity="sha256-d3j6nPvgdSos3dIAmJSHebf76C5yAALgWwcHIom40Mo=" crossorigin="anonymous"/>
-        <link rel="stylesheet" href="../public/css/style.css" />
+        <link rel="stylesheet" href="{{ constant('STYLESHEET') }}" />
+
         <title>{% block title %} {{ page_title }} {% endblock %}</title>
     </head>
 
@@ -34,7 +35,6 @@
                                         {{ nav_item.main('/admin/posts', 'Tous les articles', 'dropdown-item') }}
                                         {{ nav_item.main('/admin/users', 'Liste des utilisateurs', 'dropdown-item') }}
                                         {{ nav_item.main('/admin/comments', 'Modération des commentaires', 'dropdown-item') }}
-
                                     </ul>
                                 </li>
                                 {{ nav_item.main('/logout', 'Déconnexion') }}

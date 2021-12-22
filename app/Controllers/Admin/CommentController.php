@@ -11,6 +11,8 @@ class CommentController extends Controller
     public function list()
     {
         $this->isConnected();
+        $this->isAdmin();
+
         $comments = (new Comment)->all(true);
         $post = new Post;
 
@@ -24,6 +26,8 @@ class CommentController extends Controller
     public function listNoModerate()
     {
         $this->isConnected();
+        $this->isAdmin();
+
         $comments = (new Comment)->listModerate(false);
         $post = new Post;
 
@@ -37,6 +41,8 @@ class CommentController extends Controller
     public function listModerate()
     {
         $this->isConnected();
+        $this->isAdmin();
+
         $comments = (new Comment)->listModerate();
         $post = new Post;
 
@@ -50,6 +56,7 @@ class CommentController extends Controller
     public function delete(int $id)
     {
         $this->isConnected();
+        $this->isAdmin();
 
         $comment = (new Comment)->findById($id);
         $result = $comment->delete($id);
@@ -61,6 +68,9 @@ class CommentController extends Controller
 
     public function moderate(int $id)
     {
+        $this->isConnected();
+        $this->isAdmin();
+
         $result = (new Comment)->update($id, ['is_moderate' => 1]);
 
         if ($result) {

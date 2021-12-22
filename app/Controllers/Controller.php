@@ -41,11 +41,29 @@ abstract class Controller
 
     protected function isAdmin()
     {
-        return (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) ? true : false;
+        if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) {
+            return true;
+        } else {
+            $error = 'Vous n\'avez pas les droits nécessaires pour accéder à ce contenu.';
+            $this->twig->display('errors/right.twig', [
+                'page_title' => 'Erreur droit administrateur',
+                'error' => $error
+            ]);
+            die();
+        }
     }
 
     protected function isValidate()
     {
-        return (isset($_SESSION['is_validate']) && $_SESSION['is_validate'] === 1) ? true : false;
+        if (isset($_SESSION['is_validate']) && $_SESSION['is_validate'] === 1) {
+            return true;
+        } else {
+            $error = 'Votre compte doit être validé pour accéder à ce contenu.';
+            $this->twig->display('errors/right.twig', [
+                'page_title' => 'Compte en attente de validation',
+                'error' => $error
+            ]);
+            die();
+        }
     }
 }
