@@ -76,9 +76,9 @@ class UserController extends Controller
 
         if (password_verify($cleanedData['password'], $user->password)) {
             $_SESSION['connected'] = 1;
-            $_SESSION['userId'] = (int) $user->id;
-            $_SESSION['isAdmin'] = (int) $user->is_admin;
-            $_SESSION['isValidate'] = (int) $user->is_validate;
+            $_SESSION['user_id'] = (int) $user->id;
+            $_SESSION['is_admin'] = (int) $user->is_admin;
+            $_SESSION['is_validate'] = (int) $user->is_validate;
             $_SESSION['fullname'] = (string) $user->first_name . ' ' . $user->last_name;
 
             return header('Location: /admin/posts?success=true');

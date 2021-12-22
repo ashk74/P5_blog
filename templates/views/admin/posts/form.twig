@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block title %}
-    {{ post.title }}
+    {{ page_title }}
 {% endblock %}
 
 {% block page_content %}
@@ -17,12 +17,8 @@
             {{ parent() }}
         {% endblock %}
         <form action="{{ post is not empty ? '/admin/posts/edit/' ~ post.id : '/admin/posts/create' }}" method="POST" class="row g-2">
-            <div class="input-group col-12">
-                <label class="input-group-text fa-unicode" for="inputGroupFile01">&#xf03e; Photo de l'article</label>
-                <input type="file" class="form-control" id="inputGroupFile01">
-            </div>
             <div class="col-12">
-                <input type="text" name="title" id="title" class="form-control fa-unicode" value="{{ post.title ?? '' }}" placeholder="&#xf1dc; Titre de l\'article">
+                <input type="text" name="title" id="title" class="form-control fa-unicode" value="{{ post.title ?? '' }}" placeholder="&#xf1dc; Titre de l'article">
             </div>
 
             <div class="col-12">

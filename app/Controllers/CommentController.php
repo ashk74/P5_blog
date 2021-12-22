@@ -15,8 +15,8 @@ class CommentController extends Controller
         ]);
 
         $cleanedData = $validator->getData();
-        $cleanedData['author'] = $_SESSION['userId'];
-        $cleanedData['post_id'] = $postId;
+        $cleanedData['author'] = $_SESSION['user_id'];
+        $cleanedData['post_id'] = (int) $postId;
 
         $comment = new Comment;
 

@@ -10,6 +10,9 @@ class BlogController extends Controller
 {
     public function index()
     {
+        if (isset($_SESSION['errors'])) {
+            unset($_SESSION['errors']);
+        }
         $this->twig->display('homepage.twig', [
             'page_title' => 'Accueil - Blog',
             'creator_name' => 'Jonathan Secher',
@@ -23,7 +26,7 @@ class BlogController extends Controller
         $posts = (new Post)->all(true);
 
         $this->twig->display('blog/list.twig', [
-            'page_title' => 'Tous les articles - Blog',
+            'page_title' => 'Tous les articles',
             'posts' => $posts
         ]);
     }
@@ -39,26 +42,4 @@ class BlogController extends Controller
             'comments' => $comments
         ]);
     }
-
-    /* public function createComment(int $postId)
-    {
-        $validator = new Validator($_POST);
-        $errors = $validator->validate([
-            'content' => ['required', 'min:10']
-        ]);
-
-        $cleanedData = $validator->getData();
-        $cleanedData['author'] = $_SESSION['userId'];
-        $cleanedData['post_id'] = $postId;
-
-        $comment = new Comment;
-
-        $validator->flashErrors($errors, "/post/{$postId}#addComment");
-
-        $result = $comment->create($cleanedData);
-
-        if ($result) {
-            return header("Location: /post/{$postId}#addComment");
-        }
-    } */
 }

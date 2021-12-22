@@ -41,11 +41,11 @@ abstract class Controller
 
     protected function isAdmin()
     {
-        return (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === 1) ? true : false;
+        return (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) ? true : false;
     }
 
     protected function isValidate()
     {
-        return (isset($_SESSION['isValidate']) && $_SESSION['isValidate'] === 1) ? true : false;
+        return (isset($_SESSION['is_validate']) && $_SESSION['is_validate'] === 1) ? true : false;
     }
 }

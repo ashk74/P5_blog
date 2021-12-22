@@ -13,7 +13,7 @@ class PostController extends Controller
         $this->isConnected();
         $posts = (new Post)->all(true);
 
-        $this->twig->display('admin/posts/index.twig', [
+        $this->twig->display('admin/posts/list.twig', [
             'posts' => $posts,
             'page_title' => 'Administration des articles'
         ]);

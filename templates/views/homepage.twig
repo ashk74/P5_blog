@@ -95,6 +95,9 @@
 
     <!-- Contact form -->
     <section class="py-4 bg-light">
+        {% if _get.success %}
+            <div class="alert alert-success text-center">Votre message a bien été envoyé.</div>
+        {% endif %}
         <div class="container col-md-6 px-4 my-4">
             <div class="text-center mb-5">
                 <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3">
@@ -103,18 +106,21 @@
                 <h2 class="fw-bolder">Contactez-moi</h2>
                 <p class="lead mb-0">Je serais ravi de répondre à vos questions</p>
             </div>
-            <form action="#" method="post"  class="row g-2">
+            {% block display_errors %}
+                {{ parent() }}
+            {% endblock %}
+            <form action="/" method="POST" class="row g-2">
                 <div class="col-md-6">
-                    <input type="text" class="form-control fa-unicode" id="firstname" placeholder="&#xf007; Prénom" required/>
+                    <input type="text" class="form-control fa-unicode" id="firstname" name="firstname" placeholder="&#xf007; Prénom" required/>
                 </div>
                 <div class="col-md-6">
-                    <input type="text" class="form-control fa-unicode" id="lastname" placeholder="&#xf007; Nom" required/>
+                    <input type="text" class="form-control fa-unicode" id="lastname" name="lastname" placeholder="&#xf007; Nom" required/>
                 </div>
                 <div class="col-12">
-                    <input type="email" class="form-control fa-unicode" id="email" placeholder="&#xf1d8; Email" required/>
+                    <input type="email" class="form-control fa-unicode" id="email" name="email" placeholder="&#xf1d8; Email" required/>
                 </div>
                 <div class="col-12">
-                    <textarea class="form-control fa-unicode" id="message" rows="10" maxlength="255" placeholder="&#xf044; Message" required></textarea>
+                    <textarea class="form-control fa-unicode" id="message" name="message" rows="10" minlength="100" placeholder="&#xf044; Message" required></textarea>
                 </div>
                 <div class="col-12">
                     <button type="submit" class="col-12 btn btn-info btn-lg">Envoyer</button>

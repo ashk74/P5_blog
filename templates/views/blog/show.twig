@@ -25,8 +25,10 @@
                                     <span class="text-bold ps-2">{{ post.getAuthor(post.author).0.fullname }}</span>
                                 </div>
                                 <div class="col-md-6 text-md-end">
-                                    <img class="img-fluid rounded-circle" src="https://via.placeholder.com/36x36/593196/FFFFFF?text={{ comments|length }}" alt="..." />
-                                    <span class="text-bold ps-2">commentaires</span>
+                                    <span class="text-bold ps-2">
+                                        // TODO count moderate comments
+                                        {{ comments|length > 0 ? comments|length : '0' }} {{ comments|length <= 1 ? 'commentaire' : 'commentaires' }}
+                                    </span>
                                 </div>
                             </div>
                         </div>

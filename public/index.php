@@ -10,8 +10,13 @@ define('SCRIPTS', dirname($_SERVER['SCRIPT_NAME']) . DIRECTORY_SEPARATOR);
 
 $router = new Router($_GET['url']);
 
-// Posts controllers
+// Homepage
 $router->get('/', 'App\Controllers\BlogController@index');
+
+// Contact
+$router->post('/', 'App\Controllers\ContactController@contactPost');
+
+// Posts controllers
 $router->get('/posts', 'App\Controllers\BlogController@list');
 $router->get('/post/:id', 'App\Controllers\BlogController@show');
 
@@ -39,7 +44,14 @@ $router->get('/admin/comments', 'App\Controllers\Admin\CommentController@list');
 $router->post('/admin/comments/delete/:id', 'App\Controllers\Admin\CommentController@delete');
 $router->post('/admin/comments/moderate/:id', 'App\Controllers\Admin\CommentController@moderate');
 
-
+// Admin : Users controllers
+$router->get('/admin/users', 'App\Controllers\Admin\UserController@list');
+$router->get('/admin/users/no-validate', 'App\Controllers\Admin\UserController@listNoValidate');
+$router->get('/admin/users/validate', 'App\Controllers\Admin\UserController@listValidate');
+$router->get('/admin/users/admins', 'App\Controllers\Admin\UserController@listAdmin');
+$router->post('/admin/users/delete/:id', 'App\Controllers\Admin\UserController@delete');
+$router->post('/admin/users/validate/:id', 'App\Controllers\Admin\UserController@validateUser');
+$router->post('/admin/users/update-admin-role/:id', 'App\Controllers\Admin\UserController@updateAdminRole');
 
 try {
     $router->run();

@@ -6,9 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <meta name="Description" content="Enter your description here" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.1.3/dist/pulse/bootstrap.min.css" integrity="sha256-d3j6nPvgdSos3dIAmJSHebf76C5yAALgWwcHIom40Mo=" crossorigin="anonymous"/>
-        {% block stylesheet %}
-            <link rel="stylesheet" href="../public/css/style.css" />
-        {% endblock %}
+        <link rel="stylesheet" href="../public/css/style.css" />
         <title>{% block title %} {{ page_title }} {% endblock %}</title>
     </head>
 
@@ -28,15 +26,15 @@
 
                             {{ nav_item.main('/', 'Accueil') }}
                             {{ nav_item.main('/posts', 'Blog') }}
-                            {{ nav_item.main('/contact', 'Contact') }}
 
                             {% if _session.connected %}
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
                                     <ul class="dropdown-menu bg-primary" aria-labelledby="navbarDropdown">
-                                        {{ nav_item.main('/admin/posts', 'Gestion des articles', 'dropdown-item') }}
+                                        {{ nav_item.main('/admin/posts', 'Tous les articles', 'dropdown-item') }}
+                                        {{ nav_item.main('/admin/users', 'Liste des utilisateurs', 'dropdown-item') }}
                                         {{ nav_item.main('/admin/comments', 'Modération des commentaires', 'dropdown-item') }}
-                                        {{ nav_item.main('/admin/posts/create', 'Création d\'un article', 'dropdown-item') }}
+
                                     </ul>
                                 </li>
                                 {{ nav_item.main('/logout', 'Déconnexion') }}
@@ -63,15 +61,21 @@
             <div class="container py-4">
                 <div class="row">
                     <!-- Footer - Menu -->
-                    <div class="col-sm-12 col-lg-8 text-start">
+                    <div class="col-sm-12 col-lg-4 text-start">
                         <h3 class="text-uppercase">Menu</h3>
                         <ul class="footer-items list-unstyled">
                             {{ nav_item.footer('/', 'Accueil') }}
                             {{ nav_item.footer('/posts', 'Blog') }}
-                            {{ nav_item.footer('/contact', 'Contact') }}
+                        </ul>
+                    </div>
 
+                    <div class="col-sm-12 col-lg-4 text-start">
+                        <h3 class="text-uppercase">Administration</h3>
+                        <ul class="footer-items list-unstyled">
                             {% if _session.connected %}
-                                {{ nav_item.footer('/admin/posts', 'Administration') }}
+                                {{ nav_item.footer('/admin/posts', 'Tous les articles', 'dropdown-item') }}
+                                {{ nav_item.footer('/admin/users', 'Liste des utilisateurs', 'dropdown-item') }}
+                                {{ nav_item.footer('/admin/comments', 'Modération des commentaires', 'dropdown-item') }}
                                 {{ nav_item.footer('/logout', 'Déconnexion') }}
                             {% else %}
                                 {{ nav_item.footer('/signup', 'Inscription') }}
