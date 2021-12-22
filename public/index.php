@@ -41,6 +41,8 @@ $router->post('/admin/posts/edit/:id', 'App\Controllers\Admin\PostController@upd
 
 // Admin : Comments controllers
 $router->get('/admin/comments', 'App\Controllers\Admin\CommentController@list');
+$router->get('/admin/comments/no-moderate', 'App\Controllers\Admin\CommentController@listNoModerate');
+$router->get('/admin/comments/moderate', 'App\Controllers\Admin\CommentController@listModerate');
 $router->post('/admin/comments/delete/:id', 'App\Controllers\Admin\CommentController@delete');
 $router->post('/admin/comments/moderate/:id', 'App\Controllers\Admin\CommentController@moderate');
 

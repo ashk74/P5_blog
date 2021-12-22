@@ -8,19 +8,19 @@
     <section class="container mt-4">
         {% block page_title %}
             <h1 class="mb-3">{{ page_subtitle }}</h1>
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    Filtres
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="/admin/users">Tous les utilisateurs</a></li>
-                    <li><a class="dropdown-item" href="/admin/users/no-validate">En attente de validation</a></li>
-                    <li><a class="dropdown-item" href="/admin/users/validate">Utilisateurs validés</a></li>
-                    <li><a class="dropdown-item" href="/admin/users/admins">Liste des administrateurs</a></li>
-                </ul>
-            </div>
-
         {% endblock %}
+
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                Filtres
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/admin/users">Tous les utilisateurs</a></li>
+                <li><a class="dropdown-item" href="/admin/users/no-validate">En attente de validation</a></li>
+                <li><a class="dropdown-item" href="/admin/users/validate">Utilisateurs validés</a></li>
+                <li><a class="dropdown-item" href="/admin/users/admins">Liste des administrateurs</a></li>
+            </ul>
+        </div>
 
         <section class="container col-md-12 py-4">
             {% for user in users %}

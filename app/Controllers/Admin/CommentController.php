@@ -4,7 +4,6 @@ namespace App\Controllers\Admin;
 
 use App\Models\Post;
 use App\Models\Comment;
-use App\Validation\Validator;
 use App\Controllers\Controller;
 
 class CommentController extends Controller
@@ -12,17 +11,40 @@ class CommentController extends Controller
     public function list()
     {
         $this->isConnected();
-        if ($this->isValidate()) {
-            $comment = new Comment;
-            $comments = $comment->all(true);
-            $post = new Post;
+        $comments = (new Comment)->all(true);
+        $post = new Post;
 
-            $this->twig->display('admin/comments/list.twig', [
-                'page_title' => 'Modération des commentaires',
-                'comments' => $comments,
-                'post' => $post
-            ]);
-        }
+        $this->twig->display('admin/comments/list.twig', [
+            'page_title' => 'Tous les commentaires',
+            'comments' => $comments,
+            'post' => $post
+        ]);
+    }
+
+    public function listNoModerate()
+    {
+        $this->isConnected();
+        $comments = (new Comment)->listModerate(false);
+        $post = new Post;
+
+        $this->twig->display('admin/comments/list.twig', [
+            'comments' => $comments,
+            'page_title' => 'En attente de modération',
+            'post' => $post
+        ]);
+    }
+
+    public function listModerate()
+    {
+        $this->isConnected();
+        $comments = (new Comment)->listModerate();
+        $post = new Post;
+
+        $this->twig->display('admin/comments/list.twig', [
+            'comments' => $comments,
+            'page_title' => 'Commentaires modérés',
+            'post' => $post
+        ]);
     }
 
     public function delete(int $id)
@@ -39,10 +61,10 @@ class CommentController extends Controller
 
     public function moderate(int $id)
     {
-        $result = (new Comment)->update($id, ['is_moderate' => 1, 'moderator' => $_SESSION['fullname']]);
+        $result = (new Comment)->update($id, ['is_moderate' => 1]);
 
         if ($result) {
-            return header('Location: /admin/comments');
+            return header('Location: /admin/comments/no-moderate');
         }
     }
 }
