@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Validation\CSRF;
 use App\Validation\Validator;
 
 class UserController extends Controller
@@ -12,10 +13,12 @@ class UserController extends Controller
     public function signup()
     {
         unset($_SESSION['errors']);
+
         $this->twig->display('auth/signup.twig', [
             'form_action' => '/signup',
             'login_link' => '/login',
-            'lost_password' => '/reset'
+            'lost_password' => '/reset',
+            'token' => $this->token
         ]);
     }
 
@@ -28,6 +31,7 @@ class UserController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required', 'min:6', 'max:255'],
             'checkPassword' => ['required', 'min:6', 'max:255'],
+            'token' => ['required', 'token']
         ]);
 
         $cleanedData = $validator->getData();
@@ -35,8 +39,8 @@ class UserController extends Controller
         $userExist = (new User)->emailExist($cleanedData['email']);
 
         if (!$userExist) {
-            $this->userInfos = array_slice($cleanedData, -5, 3);
-            $passwords = array_slice($cleanedData, -2, 2);
+            $this->userInfos = array_slice($cleanedData, -6, 3);
+            $passwords = array_slice($cleanedData, -3, 2);
 
             if ($passwords['password'] === $passwords['checkPassword']) {
                 $this->userInfos['password'] = password_hash($passwords['password'], PASSWORD_BCRYPT, ['cost' => 9]);
@@ -55,19 +59,23 @@ class UserController extends Controller
     public function login()
     {
         unset($_SESSION['errors']);
+
         $this->twig->display('auth/login.twig', [
             'form_action' => '/login',
             'signup_link' => '/signup',
-            'lost_password' => '/reset'
+            'lost_password' => '/reset',
+            'token' => $this->token
         ]);
     }
 
     public function loginPost()
     {
         $validator = new Validator($_POST);
+
         $errors = $validator->validate([
             'email' => ['required', 'email'],
-            'password' => ['required', 'min:6', 'max:255']
+            'password' => ['required', 'min:6', 'max:255'],
+            'token' => ['required', 'token']
         ]);
 
         $cleanedData = $validator->getData();

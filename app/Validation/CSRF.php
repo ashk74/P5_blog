@@ -4,29 +4,34 @@ namespace App\Validation;
 
 class CSRF
 {
-    private string $token;
+    private static string $token;
 
-    public function setToken()
+    private static function setToken()
     {
-        if (!isset($_SESSION['token']) || ($_SESSION['token_time'] + 10) < time()) {
-            $this->token = bin2hex(openssl_random_pseudo_bytes(16));
+        if (!isset($_SESSION['token']) || ($_SESSION['token_time'] + 600) < time()) {
+            self::$token = bin2hex(openssl_random_pseudo_bytes(16));
+            $_SESSION['token'] = self::$token;
             $_SESSION['token_time'] = time();
         } else {
-            $this->token = $_SESSION['token'];
+            self::$token = $_SESSION['token'];
         }
     }
 
-    public function getToken()
+    public static function getToken()
     {
-        return $this->token;
+        self::setToken();
+        return self::$token;
     }
 
-    public function checkTokens()
+    public static function checkTokens(string $token)
     {
-        if (isset($_SESSION['token']) && isset($_SESSION['token_time'])) {
-            if (($_SESSION['token_time'] + 10) < time()) {
-                $this->setToken();
-            }
+        if (!isset($_SESSION['token']) && !isset($_SESSION['token_time'])) {
+            return false;
         }
+
+        if ($_SESSION['token'] !== $token) {
+            return false;
+        }
+        return true;
     }
 }

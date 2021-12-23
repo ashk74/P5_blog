@@ -2,8 +2,9 @@
 
 namespace App\Controllers\Admin;
 
-use App\Controllers\Controller;
 use App\Models\User;
+use App\Validation\Validator;
+use App\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -12,12 +13,14 @@ class UserController extends Controller
         $this->isConnected();
         $this->isAdmin();
 
+        unset($_SESSION['errors']);
         $users = (new User)->all();
 
         $this->twig->display('admin/users/list.twig', [
             'users' => $users,
             'page_title' => 'Gestion des utilisateurs',
-            'page_subtitle' => 'Tous les utilisateurs'
+            'page_subtitle' => 'Tous les utilisateurs',
+            'token' => $this->token
         ]);
     }
 
@@ -26,12 +29,14 @@ class UserController extends Controller
         $this->isConnected();
         $this->isAdmin();
 
+        unset($_SESSION['errors']);
         $users = (new User)->listValidate(false);
 
         $this->twig->display('admin/users/list.twig', [
             'users' => $users,
             'page_title' => 'Gestion des utilisateurs',
-            'page_subtitle' => 'Utilisateurs non validés'
+            'page_subtitle' => 'Utilisateurs non validés',
+            'token' => $this->token
         ]);
     }
 
@@ -40,12 +45,14 @@ class UserController extends Controller
         $this->isConnected();
         $this->isAdmin();
 
+        unset($_SESSION['errors']);
         $users = (new User)->listValidate();
 
         $this->twig->display('admin/users/list.twig', [
             'users' => $users,
             'page_title' => 'Gestion des utilisateurs',
-            'page_subtitle' => 'Utilisateurs validés'
+            'page_subtitle' => 'Utilisateurs validés',
+            'token' => $this->token
         ]);
     }
 
@@ -54,12 +61,14 @@ class UserController extends Controller
         $this->isConnected();
         $this->isAdmin();
 
+        unset($_SESSION['errors']);
         $users = (new User)->listAdmin();
 
         $this->twig->display('admin/users/list.twig', [
             'users' => $users,
             'page_title' => 'Gestion des utilisateurs',
-            'page_subtitle' => 'Liste des administrateurs'
+            'page_subtitle' => 'Liste des administrateurs',
+            'token' => $this->token
         ]);
     }
 
@@ -68,11 +77,21 @@ class UserController extends Controller
         $this->isConnected();
         $this->isAdmin();
 
-        $user = (new User);
-        $result = $user->delete($id);
+        $validator = new Validator($_POST);
 
-        if ($result) {
-            return header('Location: /admin/users');
+        $errors = $validator->validate([
+            'token' => ['required', 'token']
+        ]);
+
+        if (!$errors) {
+            $user = (new User);
+            $result = $user->delete($id);
+
+            if ($result) {
+                return header('Location: /admin/users');
+            }
+        } else {
+            $validator->flashErrors($errors, '/admin/users');
         }
     }
 
@@ -81,12 +100,22 @@ class UserController extends Controller
         $this->isConnected();
         $this->isAdmin();
 
-        $user = new User;
-        $isAdmin = $user->findById($id)->is_admin;
-        $result = $user->update($id, ['is_admin' => !$isAdmin]);
+        $validator = new Validator($_POST);
 
-        if ($result) {
-            return header('Location: /admin/users');
+        $errors = $validator->validate([
+            'token' => ['required', 'token']
+        ]);
+
+        if (!$errors) {
+            $user = new User;
+            $isAdmin = $user->findById($id)->is_admin;
+            $result = $user->update($id, ['is_admin' => !$isAdmin]);
+
+            if ($result) {
+                return header('Location: /admin/users');
+            }
+        } else {
+            $validator->flashErrors($errors, '/admin/users');
         }
     }
 
@@ -95,11 +124,21 @@ class UserController extends Controller
         $this->isConnected();
         $this->isAdmin();
 
-        $user = new User;
-        $result = $user->update($id, ['is_validate' => 1]);
+        $validator = new Validator($_POST);
 
-        if ($result) {
-            return header('Location: /admin/users');
+        $errors = $validator->validate([
+            'token' => ['required', 'token']
+        ]);
+
+        if (!$errors) {
+            $user = new User;
+            $result = $user->update($id, ['is_validate' => 1]);
+
+            if ($result) {
+                return header('Location: /admin/users');
+            }
+        } else {
+            $validator->flashErrors($errors, '/admin/users');
         }
     }
 }

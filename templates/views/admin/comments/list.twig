@@ -20,6 +20,9 @@
         </div>
 
         <section class="container col-md-12 py-4">
+            {% block display_errors %}
+                {{ parent() }}
+            {% endblock %}
             {% for comment in comments %}
                 <div class="container-fluid pb-2">
                     <div class="row d-flex border-top border-start border-end py-3">
@@ -53,13 +56,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row border-bottom border-start border-end p-2 border-top">
 
+                    <div class="row border-bottom border-start border-end p-2 border-top">
                         <form action="/admin/comments/delete/{{ comment.id }}" method="POST" class="row d-flex justify-content-md-end m-2">
+                            <div class="col-12 form-group">
+                                <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                            </div>
                             <button type="submit" class="col-md-2 btn btn-sm btn-outline-danger btn-lg rounded-3 me-2 mb-2 mb-md-0">Supprimer</button>
                         </form>
                         {% if comment.is_moderate == 0 %}
                             <form action="/admin/comments/moderate/{{ comment.id }}" method="POST" class="row d-flex justify-content-md-end m-2">
+                                <div class="col-12 form-group">
+                                    <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                                </div>
                                 <button type="submit" class="col-md-2 btn btn-sm btn-outline-success btn-lg rounded-3">Valider</button>
                             </form>
                         {% endif %}

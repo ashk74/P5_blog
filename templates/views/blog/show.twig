@@ -53,8 +53,12 @@
                                 <p>{{ comment.content|nl2br }}</p>
                                 {% if comment.author == _session.userId %}
                                     <form action="/comment/delete/{{ comment.id }}" method="POST" class="mb-4">
+                                        <div class="col-12 form-group">
+                                            <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                                        </div>
                                         <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return window.confirm('Êtes vous sûr de vouloir supprimer ce commentaire ?')">Supprimer</button>
-                                    </form>{% endif %}
+                                    </form>
+                                {% endif %}
                             </div>
                         </div>
                     {% endif %}
@@ -71,6 +75,9 @@
                 <div class="col-md-12 mb-4 ms-3">
 					<h2 class="h3" id="addComment">Laisser un commentaire</h2>
                     <form action="/post/{{ post.id }}" method="post">
+                        <div class="col-12 form-group">
+                            <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                        </div>
                         <textarea class="form-control" id="content" name="content" rows="5" cols="50" placeholder="Contenu du commentaire" required></textarea>
                         <button type="submit" class="col-12 btn btn-info btn-lg">Commenter</button>
                     </form>

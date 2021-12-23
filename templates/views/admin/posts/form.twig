@@ -39,6 +39,9 @@
                     {% endfor %}
                 </select>
             </div>
+            <div class="col-12 form-group">
+                <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+            </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-primary btn-lg col-12 my-4">{{ post is not empty ? 'Enregistrer les modifications' : 'Enregistrer l\'article' }}</button>
             </div>

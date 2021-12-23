@@ -2,9 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Validation\CSRF;
+
 abstract class Controller
 {
     protected $twig = null;
+    protected string $token;
 
     public function __construct()
     {
@@ -12,6 +15,7 @@ abstract class Controller
             session_start();
         }
 
+        $this->token = CSRF::getToken();
         $this->loadTwig();
         $this->twig->display = 'echo $this->twig->render';
     }

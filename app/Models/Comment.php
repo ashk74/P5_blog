@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use DateTime;
-
 class Comment extends Model
 {
     protected string $table = "comment";

@@ -122,6 +122,9 @@
                 <div class="col-12">
                     <textarea class="form-control fa-unicode" id="message" name="message" rows="10" minlength="100" placeholder="&#xf044; Message" required></textarea>
                 </div>
+                <div class="col-12 form-group">
+                    <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                </div>
                 <div class="col-12">
                     <button type="submit" class="col-12 btn btn-info btn-lg">Envoyer</button>
                 </div>

@@ -13,21 +13,23 @@ class CommentController extends Controller
 
         $validator = new Validator($_POST);
         $errors = $validator->validate([
-            'content' => ['required', 'min:10']
+            'content' => ['required', 'min:10'],
+            'token' => ['required', 'token']
         ]);
 
-        $cleanedData = $validator->getData();
-        $cleanedData['author'] = $_SESSION['user_id'];
-        $cleanedData['post_id'] = (int) $postId;
+        if (!$errors) {
+            $cleanedData = $validator->getData();
+            $cleanedData['author'] = $_SESSION['user_id'];
+            $cleanedData['post_id'] = (int) $postId;
 
-        $comment = new Comment;
+            $comment = new Comment;
+            $result = $comment->create($cleanedData);
 
-        $validator->flashErrors($errors, "/post/{$postId}#addComment");
-
-        $result = $comment->create($cleanedData);
-
-        if ($result) {
-            return header("Location: /post/{$postId}?success=true/#addComment");
+            if ($result) {
+                return header("Location: /post/{$postId}?success=true/#addComment");
+            }
+        } else {
+            $validator->flashErrors($errors, "/post/{$postId}#addComment");
         }
     }
 
@@ -35,11 +37,23 @@ class CommentController extends Controller
     {
         $this->isConnected();
 
-        $comment = (new Comment)->findById($id);
-        $result = $comment->delete($id);
+        $validator = new Validator($_POST);
+        $errors = $validator->validate([
+            'content' => ['required', 'min:10'],
+            'token' => ['required', 'token']
+        ]);
 
-        if ($result) {
-            return header("Location: /post/{$comment->post_id}");
+        $comment = (new Comment)->findById($id);
+
+        if (!$errors) {
+
+            $result = $comment->delete($id);
+
+            if ($result) {
+                return header("Location: /post/{$comment->post_id}");
+            }
+        } else {
+            $validator->flashErrors($errors, "/post/{$comment->post_id}");
         }
     }
 }

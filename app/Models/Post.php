@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use DateTime;
-
 class Post extends Model
 {
     protected string $table = "post";

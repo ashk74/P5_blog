@@ -23,6 +23,9 @@
         </div>
 
         <section class="container col-md-12 py-4">
+            {% block display_errors %}
+                {{ parent() }}
+            {% endblock %}
             {% for user in users %}
             <div class="row">
                 <div class="col-md-12">
@@ -51,15 +54,24 @@
                                     <div class="row">
                                         {% if user.is_validate %}
                                             <form action="/admin/users/update-admin-role/{{ user.id }}" method="POST" class="col-md-6">
+                                                <div class="col-12 form-group">
+                                                    <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                                                </div>
                                                 <button type="submit" class="btn btn-outline-warning btn-lg col-12 mb-2" onclick="return window.confirm('Êtes vous sûr de vouloir modifier le rôle administrateur de : {{ '%s %s'|format(user.first_name, user.last_name) }} ?')">{{ user.is_admin ? 'Retirer' : 'Ajouter' }} droit administrateur</button>
                                             </form>
                                         {% else %}
                                             <form action="/admin/users/validate/{{ user.id }}" method="POST" class="col-md-6">
+                                                <div class="col-12 form-group">
+                                                    <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                                                </div>
                                                 <button type="submit" class="btn btn-outline-success btn-lg col-12" onclick="return window.confirm('Êtes vous sûr de vouloir valider : {{ '%s %s'|format(user.first_name, user.last_name) }} ?')">Valider</button>
                                             </form>
                                         {% endif %}
 
                                         <form action="/admin/users/delete/{{ user.id }}" method="POST" class="col-md-6">
+                                            <div class="col-12 form-group">
+                                                <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                                            </div>
                                             <button type="submit" class="btn btn-outline-danger btn-lg col-12" onclick="return window.confirm('Êtes vous sûr de vouloir supprimer : {{ '%s %s'|format(user.first_name, user.last_name) }} ?')">Supprimer</button>
                                         </form>
                                     </div>

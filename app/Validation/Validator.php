@@ -33,6 +33,9 @@ class Validator
                             break;
                         case 'email':
                             $this->validEmail($name, $this->data[$name]);
+                        case 'token':
+                            $this->validTokens($name, $this->data[$name]);
+                            break;
                         case substr($rule, 0, 3) === 'min':
                             $this->length($name, $this->data[$name], $rule);
                             break;
@@ -94,6 +97,13 @@ class Validator
     {
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
             $this->errors[$name][] = "Le champ : {$name} doit contenir une adresse email valide";
+        }
+    }
+
+    private function validTokens(string $name, string $value)
+    {
+        if (!CSRF::checkTokens($_POST['token'])) {
+            $this->errors[$name][] = 'Les tokens doivent être initialisés et identiques';
         }
     }
 

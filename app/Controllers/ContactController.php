@@ -14,17 +14,24 @@ class ContactController extends Controller
             'firstname' => ['required', 'min:2', 'max:70'],
             'lastname' => ['required', 'min:2', 'max:70'],
             'email' => ['required', 'email'],
-            'message' => ['required', 'min:100']
+            'message' => ['required', 'min:100'],
+            'token' => ['required', 'token']
         ]);
 
-        $cleanedData = $validator->getData();
-        $cleanedData['fullname'] = $cleanedData['firstname'] . ' ' . $cleanedData['lastname'];
+        $validator = new Validator($_POST);
 
-        if (!empty($errors)) {
-            $validator->flashErrors($errors, '/');
-        } else {
+        $errors = $validator->validate([
+            'token' => ['required', 'token']
+        ]);
+
+        if (!$errors) {
+            $cleanedData = $validator->getData();
+            $cleanedData['fullname'] = $cleanedData['firstname'] . ' ' . $cleanedData['lastname'];
+
             $mail = (new Mailer)->sendMail($cleanedData);
             return header('Location: /?success=true');
+        } else {
+            $validator->flashErrors($errors, '/');
         }
     }
 }

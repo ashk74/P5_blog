@@ -13,11 +13,13 @@ class PostController extends Controller
         $this->isConnected();
         $this->isValidate();
 
+        unset($_SESSION['errors']);
         $posts = (new Post)->all(true);
 
         $this->twig->display('admin/posts/list.twig', [
             'posts' => $posts,
-            'page_title' => 'Administration des articles'
+            'page_title' => 'Administration des articles',
+            'token' => $this->token
         ]);
     }
 
@@ -31,7 +33,8 @@ class PostController extends Controller
         unset($_SESSION['errors']);
 
         $this->twig->display('admin/posts/form.twig', [
-            'authors' => $authors
+            'authors' => $authors,
+            'token' => $this->token
         ]);
     }
 
@@ -44,19 +47,22 @@ class PostController extends Controller
         $errors = $validator->validate([
             'title' => ['required', 'min:12', 'max:70'],
             'chapo' => ['required', 'min:200', 'max:600'],
-            'content' => ['required', 'min:400']
+            'content' => ['required', 'min:400'],
+            'token' => ['token', 'required']
         ]);
 
         $cleanedData = $validator->getData();
 
-        $post = new Post;
+        if (!$errors) {
+            $post = new Post;
 
-        $validator->flashErrors($errors, "/admin/posts/create");
+            $result = $post->create($cleanedData);
 
-        $result = $post->create($cleanedData);
-
-        if ($result) {
-            return header('Location: /admin/posts');
+            if ($result) {
+                return header('Location: /admin/posts');
+            }
+        } else {
+            $validator->flashErrors($errors, "/admin/posts/create");
         }
     }
 
@@ -72,7 +78,8 @@ class PostController extends Controller
 
         $this->twig->display('admin/posts/form.twig', [
             'post' => $post,
-            'authors' => $authors
+            'authors' => $authors,
+            'token' => $this->token
         ]);
     }
 
@@ -85,18 +92,21 @@ class PostController extends Controller
         $errors = $validator->validate([
             'title' => ['required', 'min:12', 'max:70'],
             'chapo' => ['required', 'min:200', 'max:600'],
-            'content' => ['required', 'min:400']
+            'content' => ['required', 'min:400'],
+            'token' => ['required', 'token']
         ]);
 
         $cleanedData = $validator->getData();
 
-        $result = (new Post)->update($id, $cleanedData);
+        if (!$errors) {
+            $result = (new Post)->update($id, $cleanedData);
 
-        if ($result) {
-            return header('Location: /admin/posts');
+            if ($result) {
+                return header('Location: /admin/posts');
+            }
+        } else {
+            $validator->flashErrors($errors, "/admin/posts/edit/{$id}");
         }
-
-        $validator->flashErrors($errors, "/admin/posts/edit/{$id}");
     }
 
     public function delete(int $id)
@@ -104,10 +114,20 @@ class PostController extends Controller
         $this->isConnected();
         $this->isValidate();
 
-        $result = (new Post)->delete($id);
+        $validator = new Validator($_POST);
 
-        if ($result) {
-            return header('Location: /admin/posts');
+        $errors = $validator->validate([
+            'token' => ['required', 'token']
+        ]);
+
+        if (!$errors) {
+            $result = (new Post)->delete($id);
+
+            if ($result) {
+                return header('Location: /admin/posts');
+            }
+        } else {
+            $validator->flashErrors($errors, "/admin/posts");
         }
     }
 }

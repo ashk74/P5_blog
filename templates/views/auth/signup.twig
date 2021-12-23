@@ -15,6 +15,7 @@
             {% block display_errors %}
                 {{ parent() }}
             {% endblock %}
+
             <form action="{{ form_action }}" method="POST"  class="row g-2 pb-4 border-bottom">
                 <div class="col-md-6">
                     <input type="text" id="firstname" name="first_name" class="form-control fa-unicode" placeholder="&#xf007; Prénom" required/>
@@ -30,6 +31,9 @@
                 </div>
                 <div class="col-12">
                     <input type="password" id="checkPassword" name="checkPassword" class="form-control fa-unicode" placeholder="&#xf084; Confirmation mot de passe" required/>
+                </div>
+                <div class="col-12 form-group">
+                    <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
                 </div>
                 <div class="col-12">
                     <button type="submit" class="col-12 btn btn-success btn-lg">Créer un compte</button>

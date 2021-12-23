@@ -9,9 +9,11 @@
                 </div>
                 {% block page_title %}<h2 class="fw-bolder">Connexion</h2>{% endblock %}
             </div>
+
             {% block display_errors %}
                 {{ parent() }}
             {% endblock %}
+
             <form action="{{ form_action }}" method="POST"  class="row g-2 border-bottom">
                 <div class="col-12 form-group">
                     <input type="email" id="email" name="email" class="form-control fa-unicode" placeholder="&#xf1d8; Email" required/>

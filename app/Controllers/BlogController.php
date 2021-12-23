@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Post;
 use App\Models\Comment;
-use App\Validation\Validator;
 
 class BlogController extends Controller
 {
@@ -17,7 +16,8 @@ class BlogController extends Controller
             'page_title' => 'Accueil - Blog',
             'creator_name' => 'Jonathan Secher',
             'quote' => 'Dès que tu cesses d\'apprendre, tu commences à mourir.',
-            'quote_author' => 'Albert Einstein'
+            'quote_author' => 'Albert Einstein',
+            'token' => $this->token
         ]);
     }
 
@@ -39,7 +39,8 @@ class BlogController extends Controller
 
         $this->twig->display('blog/show.twig', [
             'post' => $post,
-            'comments' => $comments
+            'comments' => $comments,
+            'token' => $this->token
         ]);
     }
 }

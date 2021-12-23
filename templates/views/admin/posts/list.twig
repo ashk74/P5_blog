@@ -17,6 +17,9 @@
         <a href="/admin/posts/create" class="btn btn-success" role="button">Créer un article</a>
 
         <section class="container col-md-12 py-4">
+            {% block display_errors %}
+                {{ parent() }}
+            {% endblock %}
             {% for post in posts %}
             <div class="row">
                 <div class="col-md-12">
@@ -38,6 +41,9 @@
                                         </div>
 
                                         <form action="/admin/posts/delete/{{ post.id }}" method="POST" class="col-md-6">
+                                            <div class="col-12 form-group">
+                                                <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                                            </div>
                                             <button type="submit" class="btn btn-outline-danger btn-lg col-12" onclick="return window.confirm('Êtes vous sûr de vouloir supprimer : {{ post.title }} ?')">Supprimer</button>
                                         </form>
                                     </div>
