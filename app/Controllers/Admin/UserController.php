@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Models\User;
+use App\Utils\Session;
 use App\Validation\Validator;
 use App\Controllers\Controller;
 
@@ -10,10 +11,11 @@ class UserController extends Controller
 {
     public function list()
     {
-        $this->isConnected();
         $this->isAdmin();
 
-        unset($_SESSION['errors']);
+        Session::unsetSession('errors');
+        Session::unsetSession('success');
+
         $users = (new User)->all();
 
         $this->twig->display('admin/users/list.twig', [
@@ -26,10 +28,11 @@ class UserController extends Controller
 
     public function listNoValidate()
     {
-        $this->isConnected();
         $this->isAdmin();
 
-        unset($_SESSION['errors']);
+        Session::unsetSession('errors');
+        Session::unsetSession('success');
+
         $users = (new User)->listValidate(false);
 
         $this->twig->display('admin/users/list.twig', [
@@ -42,10 +45,11 @@ class UserController extends Controller
 
     public function listValidate()
     {
-        $this->isConnected();
         $this->isAdmin();
 
-        unset($_SESSION['errors']);
+        Session::unsetSession('errors');
+        Session::unsetSession('success');
+
         $users = (new User)->listValidate();
 
         $this->twig->display('admin/users/list.twig', [
@@ -58,10 +62,11 @@ class UserController extends Controller
 
     public function listAdmin()
     {
-        $this->isConnected();
         $this->isAdmin();
 
-        unset($_SESSION['errors']);
+        Session::unsetSession('errors');
+        Session::unsetSession('success');
+
         $users = (new User)->listAdmin();
 
         $this->twig->display('admin/users/list.twig', [
@@ -74,7 +79,6 @@ class UserController extends Controller
 
     public function delete(int $id)
     {
-        $this->isConnected();
         $this->isAdmin();
 
         $validator = new Validator($_POST);
@@ -97,7 +101,6 @@ class UserController extends Controller
 
     public function updateAdminRole(int $id)
     {
-        $this->isConnected();
         $this->isAdmin();
 
         $validator = new Validator($_POST);
@@ -121,7 +124,6 @@ class UserController extends Controller
 
     public function validateUser(int $id)
     {
-        $this->isConnected();
         $this->isAdmin();
 
         $validator = new Validator($_POST);

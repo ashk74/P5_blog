@@ -7,17 +7,15 @@ require_once '../vendor/autoload.php';
 
 define('VIEWS', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR);
 define('SCRIPTS', dirname($_SERVER['SCRIPT_NAME']) . DIRECTORY_SEPARATOR);
-define('STYLESHEET', '..' . DIRECTORY_SEPARATOR . basename(__DIR__) . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'style.css');
-define('IMAGES', '..' . DIRECTORY_SEPARATOR . basename(__DIR__) . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR);
-define('AVATARS', '..' . DIRECTORY_SEPARATOR . basename(__DIR__) . DIRECTORY_SEPARATOR . 'avatars' . DIRECTORY_SEPARATOR);
+define('STYLESHEET', DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'style.css');
+define('IMAGES', DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR);
+define('AVATARS', DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'avatars' . DIRECTORY_SEPARATOR);
 
 $router = new Router($_GET['url']);
 
 // Homepage
 $router->get('/', 'App\Controllers\BlogController@index');
-
-// Contact
-$router->post('/', 'App\Controllers\ContactController@contactPost');
+$router->post('/', 'App\Controllers\BlogController@contactPost');
 
 // Posts controllers
 $router->get('/posts', 'App\Controllers\BlogController@list');
@@ -40,7 +38,7 @@ $router->get('/admin/posts/create', 'App\Controllers\Admin\PostController@create
 $router->post('/admin/posts/create', 'App\Controllers\Admin\PostController@createPost');
 $router->post('/admin/posts/delete/:id', 'App\Controllers\Admin\PostController@delete');
 $router->get('/admin/posts/edit/:id', 'App\Controllers\Admin\PostController@edit');
-$router->post('/admin/posts/edit/:id', 'App\Controllers\Admin\PostController@update');
+$router->post('/admin/posts/edit/:id', 'App\Controllers\Admin\PostController@editPost');
 
 // Admin : Comments controllers
 $router->get('/admin/comments', 'App\Controllers\Admin\CommentController@list');

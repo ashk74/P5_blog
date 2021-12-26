@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <meta name="Description" content="Enter your description here" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.1.3/dist/pulse/bootstrap.min.css" integrity="sha256-d3j6nPvgdSos3dIAmJSHebf76C5yAALgWwcHIom40Mo=" crossorigin="anonymous"/>
-        <link rel="stylesheet" href="<?= SCRIPTS . 'css' . DIRECTORY_SEPARATOR . 'style.css' ?>" />
+        <link rel="stylesheet" href="<?= STYLESHEET ?>" />
         <title>Blog - Jonathan Secher</title>
     </head>
 

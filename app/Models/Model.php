@@ -96,8 +96,7 @@ abstract class Model
         }
 
         $data['id'] = $id;
-        // TODO Fatal error: Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id = '3'' à la ligne 1 in C:\wamp64\www\P5_blog\app\Models\Model.php on line 54
-        // Video : Editer les articles
+
         return $this->editQuery("UPDATE {$this->table} SET {$sqlRequestPart} WHERE id = :id", $data);
     }
 

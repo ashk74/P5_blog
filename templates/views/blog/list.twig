@@ -13,10 +13,10 @@
                         <a href="post/{{ post.id }}"><img class="card-img-top" src="{{ constant('IMAGES') }}{{ post.photo }}" alt="..." /></a>
                         <div class="card-body">
                             <div class="row">
-                                <h2 class="col-7 card-title h4">{{ post.title }}</h2>
+                                <h2 class="col-7 card-title h4">{{ post.title|length > 20 ? post.title|slice(0, 22) ~ '..' : post.title }}</h2>
                                 <div class="col-5 small text-muted text-end">Mis à jour le {{ post.last_update|date('d/m/Y') }}</div>
                             </div>
-                            <p class="card-text text-justify">{{ post.Excerpt() }}</p>
+                            <p class="card-text text-justify">{{ post.chapo|length > 200 ? post.chapo|slice(0, 200) ~ '..' : post.chapo }}</p>
                         </div>
                     </div>
                 </div>

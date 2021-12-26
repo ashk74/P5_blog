@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
-use App\Validation\CSRF;
+use App\Utils\Session;
 use App\Validation\Validator;
 
 class UserController extends Controller
@@ -12,14 +12,19 @@ class UserController extends Controller
 
     public function signup()
     {
-        unset($_SESSION['errors']);
+        Session::unsetSession('errors');
+        Session::unsetSession('success');
 
-        $this->twig->display('auth/signup.twig', [
-            'form_action' => '/signup',
-            'login_link' => '/login',
-            'lost_password' => '/reset',
-            'token' => $this->token
-        ]);
+        if (!$this->isConnected()) {
+            $this->twig->display('auth/signup.twig', [
+                'form_action' => '/signup',
+                'login_link' => '/login',
+                'lost_password' => '/reset',
+                'token' => $this->token
+            ]);
+        } else {
+            header('Location: /');
+        }
     }
 
     public function signupPost()
@@ -45,7 +50,8 @@ class UserController extends Controller
             if ($passwords['password'] === $passwords['checkPassword']) {
                 $this->userInfos['password'] = password_hash($passwords['password'], PASSWORD_BCRYPT, ['cost' => 9]);
                 $user = (new User)->create($this->userInfos);
-                return header('Location: /signup?success=true');
+                $_SESSION['success'] = true;
+                return header('Location: /signup');
             } else {
                 $errors['password'][] = 'Les mots de passe doivent être identiques';
             }
@@ -58,14 +64,19 @@ class UserController extends Controller
 
     public function login()
     {
-        unset($_SESSION['errors']);
+        Session::unsetSession('errors');
+        Session::unsetSession('success');
 
-        $this->twig->display('auth/login.twig', [
-            'form_action' => '/login',
-            'signup_link' => '/signup',
-            'lost_password' => '/reset',
-            'token' => $this->token
-        ]);
+        if (!$this->isConnected()) {
+            $this->twig->display('auth/login.twig', [
+                'form_action' => '/login',
+                'signup_link' => '/signup',
+                'lost_password' => '/reset',
+                'token' => $this->token
+            ]);
+        } else {
+            header('Location: /');
+        }
     }
 
     public function loginPost()
@@ -78,24 +89,25 @@ class UserController extends Controller
             'token' => ['required', 'token']
         ]);
 
-        $cleanedData = $validator->getData();
+        $this->userInfos = $validator->getData();
 
         $user = new User;
 
-        if (!$user->emailExist($cleanedData['email'])) {
+        if (!$user->emailExist($this->userInfos['email'])) {
             $errors['password'][] = 'Aucun compte existant avec cette adresse email';
         }
 
-        $user = $user->getbyEmail($cleanedData['email']);
+        $user = $user->getbyEmail($this->userInfos['email']);
 
-        if (password_verify($cleanedData['password'], $user->password)) {
-            $_SESSION['connected'] = 1;
+        if (password_verify($this->userInfos['password'], $user->password)) {
+            $_SESSION['success'] = true;
+            $_SESSION['connected'] = true;
             $_SESSION['user_id'] = (int) $user->id;
             $_SESSION['is_admin'] = (int) $user->is_admin;
             $_SESSION['is_validate'] = (int) $user->is_validate;
             $_SESSION['fullname'] = (string) $user->first_name . ' ' . $user->last_name;
 
-            ($user->is_validate) ? header('Location: /admin/posts?success=true') : header('Location: /');
+            ($user->is_validate) ? header('Location: /admin/posts') : header('Location: /');
         } else {
             $errors['password'][] = 'Mauvais mot de passe';
         }

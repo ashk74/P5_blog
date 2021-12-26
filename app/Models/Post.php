@@ -6,11 +6,6 @@ class Post extends Model
 {
     protected string $table = "post";
 
-    public function getExcerpt(): string
-    {
-        return substr($this->chapo, 0, 200) . '...';
-    }
-
     public function getAuthors()
     {
         return $this->selectQuery("

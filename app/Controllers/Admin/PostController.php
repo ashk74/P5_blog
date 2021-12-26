@@ -3,17 +3,21 @@
 namespace App\Controllers\Admin;
 
 use App\Models\Post;
+use App\Utils\Session;
 use App\Validation\Validator;
 use App\Controllers\Controller;
 
 class PostController extends Controller
 {
+    private array $postInfos;
+
     public function list()
     {
-        $this->isConnected();
         $this->isValidate();
 
-        unset($_SESSION['errors']);
+        Session::unsetSession('errors');
+        Session::unsetSession('success');
+
         $posts = (new Post)->all(true);
 
         $this->twig->display('admin/posts/list.twig', [
@@ -25,12 +29,12 @@ class PostController extends Controller
 
     public function create()
     {
-        $this->isConnected();
         $this->isValidate();
 
         $authors = (new Post)->getAuthors();
 
-        unset($_SESSION['errors']);
+        Session::unsetSession('errors');
+        Session::unsetSession('success');
 
         $this->twig->display('admin/posts/form.twig', [
             'authors' => $authors,
@@ -40,7 +44,6 @@ class PostController extends Controller
 
     public function createPost()
     {
-        $this->isConnected();
         $this->isValidate();
 
         $validator = new Validator($_POST);
@@ -51,12 +54,13 @@ class PostController extends Controller
             'token' => ['token', 'required']
         ]);
 
-        $cleanedData = $validator->getData();
-
         if (!$errors) {
+            $this->postInfos = $validator->getData();
+            $this->postInfos = array_slice($this->postInfos, -5, 4);
+
             $post = new Post;
 
-            $result = $post->create($cleanedData);
+            $result = $post->create($this->postInfos);
 
             if ($result) {
                 return header('Location: /admin/posts');
@@ -68,13 +72,13 @@ class PostController extends Controller
 
     public function edit(int $id)
     {
-        $this->isConnected();
         $this->isValidate();
 
         $post = (new Post)->findById($id);
         $authors = (new Post)->getAuthors();
 
-        unset($_SESSION['errors']);
+        Session::unsetSession('errors');
+        Session::unsetSession('success');
 
         $this->twig->display('admin/posts/form.twig', [
             'post' => $post,
@@ -83,9 +87,8 @@ class PostController extends Controller
         ]);
     }
 
-    public function update(int $id)
+    public function editPost(int $id)
     {
-        $this->isConnected();
         $this->isValidate();
 
         $validator = new Validator($_POST);
@@ -96,10 +99,11 @@ class PostController extends Controller
             'token' => ['required', 'token']
         ]);
 
-        $cleanedData = $validator->getData();
-
         if (!$errors) {
-            $result = (new Post)->update($id, $cleanedData);
+            $this->postInfos = $validator->getData();
+            $this->postInfos = array_slice($this->postInfos, -5, 4);
+
+            $result = (new Post)->update($id, $this->postInfos);
 
             if ($result) {
                 return header('Location: /admin/posts');
@@ -111,7 +115,6 @@ class PostController extends Controller
 
     public function delete(int $id)
     {
-        $this->isConnected();
         $this->isValidate();
 
         $validator = new Validator($_POST);

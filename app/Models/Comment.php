@@ -6,7 +6,7 @@ class Comment extends Model
 {
     protected string $table = "comment";
 
-    public function fetchLinkedComments(int $postId): array
+    public function linkedComments(int $postId): array
     {
         return $this->selectQuery("SELECT * FROM {$this->table} WHERE post_id = ?", [$postId]);
     }

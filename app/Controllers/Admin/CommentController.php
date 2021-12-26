@@ -11,7 +11,6 @@ class CommentController extends Controller
 {
     public function list()
     {
-        $this->isConnected();
         $this->isAdmin();
 
         unset($_SESSION['errors']);
@@ -28,7 +27,6 @@ class CommentController extends Controller
 
     public function listNoModerate()
     {
-        $this->isConnected();
         $this->isAdmin();
 
         unset($_SESSION['errors']);
@@ -45,7 +43,6 @@ class CommentController extends Controller
 
     public function listModerate()
     {
-        $this->isConnected();
         $this->isAdmin();
 
         unset($_SESSION['errors']);
@@ -62,7 +59,6 @@ class CommentController extends Controller
 
     public function delete(int $id)
     {
-        $this->isConnected();
         $this->isAdmin();
 
         $validator = new Validator($_POST);
@@ -85,7 +81,6 @@ class CommentController extends Controller
 
     public function moderate(int $id)
     {
-        $this->isConnected();
         $this->isAdmin();
 
         $validator = new Validator($_POST);

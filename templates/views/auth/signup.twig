@@ -2,8 +2,12 @@
 
 {% block page_content %}
     <section class="py-4 bg-light">
-        {% if _get.success %}
-            <div class="alert alert-success text-center">Votre compte a bien été créé. Connectez-vous <a href="/login">ici</a></div>
+        {% if _session.success %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                Votre compte a bien été créé. Connectez-vous <a href="/login">ici</a>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         {% endif %}
         <div class="container col-md-6 px-4 my-4">
             <div class="text-center mb-5">

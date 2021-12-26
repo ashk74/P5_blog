@@ -20,6 +20,11 @@ abstract class Controller
         $this->twig->display = 'echo $this->twig->render';
     }
 
+    /**
+     * Method used to load Twig
+     *
+     * @return object
+     */
     protected function loadTwig(): object
     {
         $loader = new \Twig\Loader\FilesystemLoader(['../templates', '../templates/views', '../templates/macros']);
@@ -36,38 +41,46 @@ abstract class Controller
 
     protected function isConnected()
     {
-        if (isset($_SESSION['connected']) && $_SESSION['connected'] === 1) {
+        if (isset($_SESSION['connected']) && $_SESSION['connected']) {
             return true;
         } else {
-            return header('Location: /login');
+            return false;
         }
     }
 
     protected function isAdmin()
     {
-        if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) {
-            return true;
+        if ($this->isConnected()) {
+            if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) {
+                return true;
+            } else {
+                $error = 'Vous n\'avez pas les droits nécessaires pour accéder à ce contenu.';
+                $this->twig->display('errors/right.twig', [
+                    'page_title' => 'Erreur droit administrateur',
+                    'error' => $error
+                ]);
+                return false;
+            }
         } else {
-            $error = 'Vous n\'avez pas les droits nécessaires pour accéder à ce contenu.';
-            $this->twig->display('errors/right.twig', [
-                'page_title' => 'Erreur droit administrateur',
-                'error' => $error
-            ]);
-            die();
+            header('Location: /login');
         }
     }
 
     protected function isValidate()
     {
-        if (isset($_SESSION['is_validate']) && $_SESSION['is_validate'] === 1) {
-            return true;
+        if ($this->isConnected()) {
+            if (isset($_SESSION['is_validate']) && $_SESSION['is_validate'] === 1) {
+                return true;
+            } else {
+                $error = 'Votre compte doit être validé pour accéder à ce contenu.';
+                $this->twig->display('errors/right.twig', [
+                    'page_title' => 'Compte en attente de validation',
+                    'error' => $error
+                ]);
+                return false;
+            }
         } else {
-            $error = 'Votre compte doit être validé pour accéder à ce contenu.';
-            $this->twig->display('errors/right.twig', [
-                'page_title' => 'Compte en attente de validation',
-                'error' => $error
-            ]);
-            die();
+            header('Location: /login');
         }
     }
 }

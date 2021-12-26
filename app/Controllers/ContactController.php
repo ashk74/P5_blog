@@ -7,6 +7,8 @@ use App\Validation\Validator;
 
 class ContactController extends Controller
 {
+    private array $contactInfos;
+
     public function contactPost()
     {
         $validator = new Validator($_POST);
@@ -18,17 +20,12 @@ class ContactController extends Controller
             'token' => ['required', 'token']
         ]);
 
-        $validator = new Validator($_POST);
-
-        $errors = $validator->validate([
-            'token' => ['required', 'token']
-        ]);
-
         if (!$errors) {
-            $cleanedData = $validator->getData();
-            $cleanedData['fullname'] = $cleanedData['firstname'] . ' ' . $cleanedData['lastname'];
+            $this->contactInfos = $validator->getData();
 
-            $mail = (new Mailer)->sendMail($cleanedData);
+            $this->contactInfos['fullname'] = $this->contactInfos['firstname'] . ' ' . $this->contactInfos['lastname'];
+
+            $mail = (new Mailer)->sendMail($this->contactInfos);
             return header('Location: /?success=true');
         } else {
             $validator->flashErrors($errors, '/');

@@ -7,6 +7,16 @@
 {% block page_content %}
     <section class="container mt-4">
         <div class="row">
+            {% block display_errors %}
+                {{ parent() }}
+            {% endblock %}
+            {% if _session.success %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Votre commentaire est en attente de modération
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
             <div class="col-md-12">
                 <!-- Blog post-->
                 <div class="card mb-4">
@@ -21,14 +31,8 @@
                         <div class="row border-top pt-3 d-flex">
                             <div class="row col-md-12 order-md-2">
                                 <div class="col-md-6 mb-2">
-                                    <img class="img-fluid rounded-circle" src="../public/uploads/user-profile-32x32.png" alt="..." />
+                                    <img class="img-fluid rounded-circle" src="{{ constant('AVATARS') }}/user-profile-32x32.png" alt="..." />
                                     <span class="text-bold ps-2">{{ post.getAuthor(post.author).0.fullname }}</span>
-                                </div>
-                                <div class="col-md-6 text-md-end">
-                                    <span class="text-bold ps-2">
-                                        // TODO count moderate comments
-                                        {{ comments|length > 0 ? comments|length : '0' }} {{ comments|length <= 1 ? 'commentaire' : 'commentaires' }}
-                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -44,7 +48,7 @@
                     {% if comment.is_moderate == 1 %}
                         <div class="row border-bottom pt-4">
                             <div class="col-1 text-end">
-                                <img class="img-fluid rounded-circle" src="../public/uploads/user-profile-32x32.png" alt="..." />
+                                <img class="img-fluid rounded-circle" src="{{ constant('AVATARS') }}/user-profile-32x32.png" alt="..." />
                             </div>
 
                             <div class="col-11 ps-2">
@@ -66,19 +70,15 @@
 			</div>
 
             {% if _session.connected %}
-                {% block display_errors %}
-                    {{ parent() }}
-                {% endblock %}
-                {% if _get.success %}
-                    <div class="alert alert-success">Votre commentaire est en attente de modération</div>
-                {% endif %}
                 <div class="col-md-12 mb-4 ms-3">
 					<h2 class="h3" id="addComment">Laisser un commentaire</h2>
                     <form action="/post/{{ post.id }}" method="post">
                         <div class="col-12 form-group">
+                            <textarea class="form-control" id="content" name="content" rows="5" cols="50" placeholder="Contenu du commentaire" required></textarea>
+                        </div>
+                        <div class="col-12 form-group">
                             <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
                         </div>
-                        <textarea class="form-control" id="content" name="content" rows="5" cols="50" placeholder="Contenu du commentaire" required></textarea>
                         <button type="submit" class="col-12 btn btn-info btn-lg">Commenter</button>
                     </form>
 				</div>
