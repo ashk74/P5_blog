@@ -63,6 +63,7 @@ class BlogController extends Controller
         if (!$errors) {
             $cleanedData = $validator->getData();
             $cleanedData['fullname'] = $cleanedData['firstname'] . ' ' . $cleanedData['lastname'];
+            (new Mailer)->sendMail($cleanedData);
             $_SESSION['success'] = true;
             header('Location: /');
         } else {
