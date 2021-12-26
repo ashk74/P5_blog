@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use DevCoder\DotEnv;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -13,6 +14,9 @@ class Mailer
     public function __construct()
     {
         $this->mail = new PHPMailer(true);
+
+        $absolutePathToEnvFile = __DIR__ . '/.env';
+        (new DotEnv($absolutePathToEnvFile))->load();
     }
 
     public function sendMail(array $data)
@@ -23,21 +27,21 @@ class Mailer
             $this->mail->CharSet = 'UTF-8';
             $this->mail->SMTPDebug = SMTP::DEBUG_OFF;
             $this->mail->isSMTP();
-            $this->mail->Host       = 'mail.infomaniak.com';
+            $this->mail->Host       = getenv('HOST');
             $this->mail->SMTPAuth   = true;
-            $this->mail->Username   = 'contact@jonathan-secher.site';
-            $this->mail->Password   = 'veuYYhAvecHukMGrwHFRLWTWEnKbXTj8No5JKKK5f7MNbCYhJDWKAxaAiK5hmtyt';
+            $this->mail->Username   = getenv('USERNAME');
+            $this->mail->Password   = getenv('PASSWORD');
             $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $this->mail->Port       = 465;
 
             //Recipients
             $this->mail->setFrom($data['email'], $data['firstname'] . ' ' . $data['lastname']);
-            $this->mail->addAddress('secher.jonathan@gmail.com', 'Jonathan Secher');
+            $this->mail->addAddress(getenv('RECIPIENT'), getenv('RECIPIENT_NAME'));
             $this->mail->addReplyTo($data['email'], $data['fullname']);
 
             //Content
             $this->mail->isHTML(false);
-            $this->mail->Subject = 'Contact - Blog JS';
+            $this->mail->Subject = getenv('SUBJECT');
             $this->mail->Body    = $data['message'];
 
             $this->mail->send();
