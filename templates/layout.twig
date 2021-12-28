@@ -97,13 +97,13 @@
                     <div class="footer-items col-sm-12 col-lg-4 text-end">
                         <ul class="list-inline">
                             <li class="list-inline-item">
-                                <a href="https://github.com/ashk74" target="_blank" rel="noopener noreferrer" ><i class="fab fa-github fa-3x"></i></a>
+                                <a href="{{ constant('GITHUB_LINK') }}" target="_blank" rel="noopener noreferrer" ><i class="fab fa-github fa-3x"></i></a>
                             </li>
                             <li class="list-inline-item ms-4 mx-4">
-                                <a href="#" target="_blank" rel="noopener noreferrer" ><i class="fab fa-linkedin-in fa-3x"></i></a>
+                                <a href="{{ constant('LINKEDIN_LINK') }}" target="_blank" rel="noopener noreferrer" ><i class="fab fa-linkedin-in fa-3x"></i></a>
                             </li>
                             <li class="list-inline-item">
-                                <a href="#" target="_blank" rel="noopener noreferrer" ><i class="fab fa-twitter fa-3x"></i></a>
+                                <a href="{{ constant('TWITTER_LINK') }}" target="_blank" rel="noopener noreferrer" ><i class="fab fa-twitter fa-3x"></i></a>
                             </li>
                         </ul>
                     </div>
@@ -112,7 +112,7 @@
 
             {% block copyright %}
                 <div class="copyright text-center py-2">
-                    <span>Jonathan Secher - Copyright © {{ 'now'|date("Y") }}</span>
+                    <span>{{ constant('CREATOR_NAME') }} - Copyright © {{ 'now'|date("Y") }}</span>
                 </div>
             {% endblock copyright %}
         </footer>

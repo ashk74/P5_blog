@@ -24,9 +24,6 @@ class BlogController extends Controller
         // Send parameters to the layout for display with Twig
         $this->twig->display('homepage.twig', [
             'page_title' => 'Accueil - Blog',
-            'creator_name' => 'Jonathan Secher',
-            'quote' => 'Dès que tu cesses d\'apprendre, tu commences à mourir.',
-            'quote_author' => 'Albert Einstein',
             'token' => $this->token
         ]);
     }

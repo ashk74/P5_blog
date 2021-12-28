@@ -9,6 +9,16 @@ define('STYLESHEET', DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'css
 define('IMAGES', DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR);
 define('AVATARS', DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'avatars' . DIRECTORY_SEPARATOR);
 
+// Used in homepage.twig
+define('CREATOR_NAME', 'Jonathan Secher');
+define('QUOTE', 'Dès que tu cesses d\'apprendre, tu commences à mourir.');
+define('QUOTE_AUTHOR', 'Albert Einstein');
+
+// Used in layout.twig
+define('GITHUB_LINK', 'https://github.com/ashk74');
+define('LINKEDIN_LINK', 'https://www.linkedin.com/in/jonathan-secher-43b851225');
+define('TWITTER_LINK', 'https://twitter.com/jonathan_secher');
+
 $router = new Router($_GET['url']);
 
 // Homepage
