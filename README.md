@@ -35,7 +35,8 @@ Versions used in this project :
 ### 1.  Download zip files or clone the project repository with github - [GitHub documentation](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository)
 
 ### 2.  Create database
-*   Import **blog.sql** file in your DBMS (sql/blog.sql)
+1.  In your DBMS create a new database named *blog*
+2.  Import **blog.sql** file in your DBMS (file available here : sql/blog.sql)
 
 ### 3.  Configure SMTP server
 *   Go to **app/utils** folder and complete the **.env** file with your SMTP informations
