@@ -1,0 +1,2 @@
+# P5_blog
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9ab36f03261c45a9b132b06422a66af1)](https://app.codacy.com/gh/ashk74/P5_blog?utm_source=github.com&utm_medium=referral&utm_content=ashk74/P5_blog&utm_campaign=Badge_Grade_Settings)
