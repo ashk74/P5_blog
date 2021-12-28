@@ -11,15 +11,24 @@ class PostController extends Controller
 {
     private array $postInfos;
 
+    /**
+     * Display : All posts
+     *
+     * @return void
+     */
     public function list()
     {
-        $this->isValidate();
+        // Check validated user
+        $this->isValidated();
 
+        // Remove session array
         Session::unsetSession('errors');
         Session::unsetSession('success');
 
+        // Retrieve all posts
         $posts = (new Post)->all(true);
 
+        // Send parameters to the layout for display with Twig
         $this->twig->display('admin/posts/list.twig', [
             'posts' => $posts,
             'page_title' => 'Administration des articles',
@@ -27,25 +36,41 @@ class PostController extends Controller
         ]);
     }
 
+    /**
+     * Display form : Create new post
+     *
+     * @return void
+     */
     public function create()
     {
-        $this->isValidate();
+        // Check validated user
+        $this->isValidated();
 
-        $authors = (new Post)->getAuthors();
-
+        // Remove session array
         Session::unsetSession('errors');
         Session::unsetSession('success');
 
+        // Retrieve all authors
+        $authors = (new Post)->getAuthors();
+
+        // Send parameters to the layout for display with Twig
         $this->twig->display('admin/posts/form.twig', [
             'authors' => $authors,
             'token' => $this->token
         ]);
     }
 
+    /**
+     * Validate form : Create new post
+     *
+     * @return void
+     */
     public function createPost()
     {
-        $this->isValidate();
+        // Check validated user
+        $this->isValidated();
 
+        // Send user data to the validator
         $validator = new Validator($_POST);
         $errors = $validator->validate([
             'title' => ['required', 'min:12', 'max:70'],
@@ -54,13 +79,12 @@ class PostController extends Controller
             'token' => ['token', 'required']
         ]);
 
+        // Check errors and create new post
         if (!$errors) {
-            $this->postInfos = $validator->getData();
+            $this->postInfos = $validator->getSanitizedData();
             $this->postInfos = array_slice($this->postInfos, -5, 4);
 
-            $post = new Post;
-
-            $result = $post->create($this->postInfos);
+            $result = (new Post)->create($this->postInfos);
 
             if ($result) {
                 return header('Location: /admin/posts');
@@ -70,16 +94,27 @@ class PostController extends Controller
         }
     }
 
+    /**
+     * Display form : Edit existing post
+     *
+     * @param integer $id ID of the post to edit
+     *
+     * @return void
+     */
     public function edit(int $id)
     {
-        $this->isValidate();
+        // Check validated user
+        $this->isValidated();
 
-        $post = (new Post)->findById($id);
-        $authors = (new Post)->getAuthors();
-
+        // Remove session array
         Session::unsetSession('errors');
         Session::unsetSession('success');
 
+        // Retrieve post by ID and all authors
+        $post = (new Post)->findById($id);
+        $authors = (new Post)->getAuthors();
+
+        // Send parameters to the layout for display with Twig
         $this->twig->display('admin/posts/form.twig', [
             'post' => $post,
             'authors' => $authors,
@@ -87,10 +122,19 @@ class PostController extends Controller
         ]);
     }
 
+    /**
+     * Validate form : Edit existing post
+     *
+     * @param integer $id ID of the post to update
+     *
+     * @return void
+     */
     public function editPost(int $id)
     {
-        $this->isValidate();
+        // Check validated user
+        $this->isValidated();
 
+        // Send user data to the validator
         $validator = new Validator($_POST);
         $errors = $validator->validate([
             'title' => ['required', 'min:12', 'max:70'],
@@ -99,8 +143,9 @@ class PostController extends Controller
             'token' => ['required', 'token']
         ]);
 
+        // Check errors and edit existing post
         if (!$errors) {
-            $this->postInfos = $validator->getData();
+            $this->postInfos = $validator->getSanitizedData();
             $this->postInfos = array_slice($this->postInfos, -5, 4);
 
             $result = (new Post)->update($id, $this->postInfos);
@@ -113,16 +158,25 @@ class PostController extends Controller
         }
     }
 
+    /**
+     * Validate form : Delete post
+     *
+     * @param integer $id ID of the post to delete
+     *
+     * @return void
+     */
     public function delete(int $id)
     {
-        $this->isValidate();
+        // Check validated user
+        $this->isValidated();
 
+        // Send user data to the validator
         $validator = new Validator($_POST);
-
         $errors = $validator->validate([
             'token' => ['required', 'token']
         ]);
 
+        // Check errors and delete post
         if (!$errors) {
             $result = (new Post)->delete($id);
 

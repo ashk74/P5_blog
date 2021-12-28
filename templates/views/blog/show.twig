@@ -55,7 +55,7 @@
                                 <span class="text-bold">{{ post.getAuthor(comment.author).0.fullname }}</span>
                                 <div class="small text-muted">{{ comment.last_update|date('d/m/Y à H:i') }}</div>
                                 <p>{{ comment.content|nl2br }}</p>
-                                {% if comment.author == _session.userId %}
+                                {% if comment.author == _session.user_id %}
                                     <form action="/comment/delete/{{ comment.id }}" method="POST" class="mb-4">
                                         <div class="col-12 form-group">
                                             <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>

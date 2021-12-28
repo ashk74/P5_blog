@@ -25,6 +25,13 @@ abstract class Model
         $this->pdo = Database::dbConnect();
     }
 
+    /**
+     * Retrieve all items in the current table
+     *
+     * @param boolean|null $orderBy False by default | True if the results must be displayed by last update date
+     *
+     * @return array
+     */
     public function all(?bool $orderBy = false): array
     {
         $sql = "SELECT * FROM {$this->table}";
@@ -39,11 +46,11 @@ abstract class Model
     }
 
     /**
-     * Refactoring query for fetch() or fetchAll()
+     * Dynamic select query method
      *
      * @param string $sql SQL query
-     * @param integer|null $param Param to execute
-     * @param boolean $single True for fetch() | False for fetchAll()
+     * @param integer|null $param Array of params to execute : Null by default
+     * @param boolean $single True for fetch() | False or null for fetchAll()
      */
     public function selectQuery(string $sql, array $param = null, bool $single = null)
     {
@@ -54,14 +61,22 @@ abstract class Model
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this));
 
         if ($method === 'query') {
-           return $stmt->$fetch();
+            return $stmt->$fetch();
         } else {
             $stmt->execute($param);
             return $stmt->$fetch();
         }
     }
 
-    public function editQuery(string $sql, array $param = null)
+    /**
+     * Dynamic query method for update or delete
+     *
+     * @param string $sql
+     * @param array|null $param
+     *
+     * @return bool
+     */
+    public function editQuery(string $sql, array $param = null): bool
     {
         $stmt = $this->pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this));
@@ -69,6 +84,13 @@ abstract class Model
         return $stmt->execute($param);
     }
 
+    /**
+     * Dynamic insert query method
+     *
+     * @param array $data
+     *
+     * @return void
+     */
     public function create(array $data)
     {
         $firstParenthesis = "";
@@ -84,6 +106,14 @@ abstract class Model
         return $this->editQuery("INSERT INTO {$this->table} ($firstParenthesis) VALUES ($secondParenthesis)", $data);
     }
 
+    /**
+     * Dynamic update query method
+     *
+     * @param integer $id
+     * @param array $data
+     *
+     * @return void
+     */
     public function update(int $id, array $data)
     {
         $sqlRequestPart = "";

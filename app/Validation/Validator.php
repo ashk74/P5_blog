@@ -13,7 +13,15 @@ class Validator
         $this->errors = [];
     }
 
-    private static function sanitize(array $data) {
+    /**
+     * Sanitize user data : strip slashes + strip tags + strip whitespace from the beginning and end
+     *
+     * @param array $data User data to be sanitize
+     *
+     * @return array Data sanitized
+     */
+    private static function sanitize(array $data): array
+    {
         foreach ($data as $key => $value) {
             $data[$key] = stripslashes($data[$key]);
             $data[$key] = strip_tags($data[$key]);
@@ -22,9 +30,16 @@ class Validator
         return $data;
     }
 
+    /**
+     * Validates the data following the rules passed in parameter
+     *
+     * @param array $rules Rule to which the data must conform
+     *
+     * @return array|null Array of errors or nothing
+     */
     public function validate(array $rules): ?array
     {
-        foreach($rules as $name => $rulesArray) {
+        foreach ($rules as $name => $rulesArray) {
             if (array_key_exists($name, $this->data)) {
                 foreach ($rulesArray as $rule) {
                     switch ($rule) {
@@ -33,6 +48,7 @@ class Validator
                             break;
                         case 'email':
                             $this->validEmail($name, $this->data[$name]);
+                            break;
                         case 'token':
                             $this->validTokens($name, $this->data[$name]);
                             break;
@@ -51,18 +67,21 @@ class Validator
         return $this->getErrors();
     }
 
-    public function flashErrors(?array $errors, string $path)
+    /**
+     * Store errors messages in session
+     *
+     * @param array|null $errors Array containing errors or nothing
+     * @param string $path Redirection path
+     *
+     * @return void
+     */
+    public function flashErrors(?array $errors, string $path): void
     {
         if ($errors) {
             $_SESSION['errors'][] = $errors;
             header("Location: {$path}");
             exit;
         }
-    }
-
-    private function getErrors(): ?array
-    {
-        return $this->errors;
     }
 
     private function required(string $name, string $value)
@@ -100,14 +119,19 @@ class Validator
         }
     }
 
-    private function validTokens(string $name, string $value)
+    private function validTokens(string $name, string $token)
     {
-        if (!CSRF::checkTokens($_POST['token'])) {
+        if (!CSRF::checkTokens($token)) {
             $this->errors[$name][] = 'Les tokens doivent être initialisés et identiques';
         }
     }
 
-    public function getData()
+    private function getErrors(): ?array
+    {
+        return $this->errors;
+    }
+
+    public function getSanitizedData()
     {
         return $this->data;
     }

@@ -9,15 +9,24 @@ use App\Controllers\Controller;
 
 class UserController extends Controller
 {
-    public function list()
+    /**
+     * Display : All users
+     *
+     * @return void
+     */
+    public function list(): void
     {
+        // Check admin right
         $this->isAdmin();
 
+        // Remove session array
         Session::unsetSession('errors');
         Session::unsetSession('success');
 
+        // Retrieve all users
         $users = (new User)->all();
 
+        // Send parameters to the layout for display with Twig
         $this->twig->display('admin/users/list.twig', [
             'users' => $users,
             'page_title' => 'Gestion des utilisateurs',
@@ -26,15 +35,24 @@ class UserController extends Controller
         ]);
     }
 
-    public function listNoValidate()
+    /**
+     * Display : All not validated users
+     *
+     * @return void
+     */
+    public function listNotValidated(): void
     {
+        // Check admin right
         $this->isAdmin();
 
+        // Remove session array
         Session::unsetSession('errors');
         Session::unsetSession('success');
 
-        $users = (new User)->listValidate(false);
+        // Retrieve all not validated users
+        $users = (new User)->listValidated(false);
 
+        // Send parameters to the layout for display with Twig
         $this->twig->display('admin/users/list.twig', [
             'users' => $users,
             'page_title' => 'Gestion des utilisateurs',
@@ -43,15 +61,24 @@ class UserController extends Controller
         ]);
     }
 
-    public function listValidate()
+    /**
+     * Display : All validated users
+     *
+     * @return void
+     */
+    public function listValidated(): void
     {
+        // Check admin right
         $this->isAdmin();
 
+        // Remove session array
         Session::unsetSession('errors');
         Session::unsetSession('success');
 
-        $users = (new User)->listValidate();
+        // Retrieve all validated users
+        $users = (new User)->listValidated();
 
+        // Send parameters to the layout for display with Twig
         $this->twig->display('admin/users/list.twig', [
             'users' => $users,
             'page_title' => 'Gestion des utilisateurs',
@@ -60,15 +87,24 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Display : All admin users
+     *
+     * @return void
+     */
     public function listAdmin()
     {
+        // Check admin right
         $this->isAdmin();
 
+        // Remove session array
         Session::unsetSession('errors');
         Session::unsetSession('success');
 
+        // Retrieve all admin users
         $users = (new User)->listAdmin();
 
+        // Send parameters to the layout for display with Twig
         $this->twig->display('admin/users/list.twig', [
             'users' => $users,
             'page_title' => 'Gestion des utilisateurs',
@@ -77,19 +113,27 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Validate form : Delete user
+     *
+     * @param integer $id ID of the user to delete
+     *
+     * @return void
+     */
     public function delete(int $id)
     {
+        // Check admin right
         $this->isAdmin();
 
+        // Send token to the validator
         $validator = new Validator($_POST);
-
         $errors = $validator->validate([
             'token' => ['required', 'token']
         ]);
 
+        // Check errors and delete user
         if (!$errors) {
-            $user = (new User);
-            $result = $user->delete($id);
+            $result = (new User)->delete($id);
 
             if ($result) {
                 return header('Location: /admin/users');
@@ -99,16 +143,25 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Validate form : Update admin role
+     *
+     * @param integer $id ID of the user to update admin role
+     *
+     * @return void
+     */
     public function updateAdminRole(int $id)
     {
+        // Check admin right
         $this->isAdmin();
 
+        // Send token to the validator
         $validator = new Validator($_POST);
-
         $errors = $validator->validate([
             'token' => ['required', 'token']
         ]);
 
+        // Check errors and update admin role
         if (!$errors) {
             $user = new User;
             $isAdmin = $user->findById($id)->is_admin;
@@ -122,16 +175,25 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Validate form : Update validate user
+     *
+     * @param integer $id ID of the user to validate
+     *
+     * @return void
+     */
     public function validateUser(int $id)
     {
+        // Check admin right
         $this->isAdmin();
 
+        // Send token to the validator
         $validator = new Validator($_POST);
-
         $errors = $validator->validate([
             'token' => ['required', 'token']
         ]);
 
+        // Check errors and update validate status
         if (!$errors) {
             $user = new User;
             $result = $user->update($id, ['is_validate' => 1]);
