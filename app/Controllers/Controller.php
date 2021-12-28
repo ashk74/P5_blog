@@ -4,11 +4,14 @@ namespace App\Controllers;
 
 use App\Validation\CSRF;
 
-abstract class Controller
+class Controller
 {
-    protected $twig = null;
+    public $twig = null;
     protected string $token;
 
+    /**
+     * Check session status and start if necessary. Generate and store token. Load twig.
+     */
     public function __construct()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -21,7 +24,7 @@ abstract class Controller
     }
 
     /**
-     * Method used to load Twig
+     * Configure and return Twig
      *
      * @return object
      */
@@ -54,10 +57,9 @@ abstract class Controller
             if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1) {
                 return true;
             } else {
-                $error = 'Vous n\'avez pas les droits nécessaires pour accéder à ce contenu.';
                 $this->twig->display('errors/right.twig', [
                     'page_title' => 'Erreur droit administrateur',
-                    'error' => $error
+                    'error' => 'Vous n\'avez pas les droits nécessaires pour accéder à ce contenu.'
                 ]);
                 return false;
             }
@@ -66,16 +68,15 @@ abstract class Controller
         }
     }
 
-    protected function isValidate()
+    protected function isValidated()
     {
         if ($this->isConnected()) {
             if (isset($_SESSION['is_validate']) && $_SESSION['is_validate'] === 1) {
                 return true;
             } else {
-                $error = 'Votre compte doit être validé pour accéder à ce contenu.';
                 $this->twig->display('errors/right.twig', [
                     'page_title' => 'Compte en attente de validation',
-                    'error' => $error
+                    'error' => 'Votre compte doit être validé pour accéder à ce contenu.'
                 ]);
                 return false;
             }
