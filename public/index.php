@@ -5,8 +5,6 @@ use Router\Router;
 
 require_once '../vendor/autoload.php';
 
-define('VIEWS', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR);
-define('SCRIPTS', dirname($_SERVER['SCRIPT_NAME']) . DIRECTORY_SEPARATOR);
 define('STYLESHEET', DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'style.css');
 define('IMAGES', DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR);
 define('AVATARS', DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'avatars' . DIRECTORY_SEPARATOR);
@@ -42,14 +40,14 @@ $router->post('/admin/posts/edit/:id', 'App\Controllers\Admin\PostController@edi
 
 // Admin : Comments controllers
 $router->get('/admin/comments', 'App\Controllers\Admin\CommentController@list');
-$router->get('/admin/comments/no-moderate', 'App\Controllers\Admin\CommentController@listNoModerate');
-$router->get('/admin/comments/moderate', 'App\Controllers\Admin\CommentController@listModerate');
+$router->get('/admin/comments/not-moderated', 'App\Controllers\Admin\CommentController@listNotModerated');
+$router->get('/admin/comments/moderate', 'App\Controllers\Admin\CommentController@listModerated');
 $router->post('/admin/comments/delete/:id', 'App\Controllers\Admin\CommentController@delete');
 $router->post('/admin/comments/moderate/:id', 'App\Controllers\Admin\CommentController@moderate');
 
 // Admin : Users controllers
 $router->get('/admin/users', 'App\Controllers\Admin\UserController@list');
-$router->get('/admin/users/no-validate', 'App\Controllers\Admin\UserController@listNoValidate');
+$router->get('/admin/users/no-validate', 'App\Controllers\Admin\UserController@listNotValidated');
 $router->get('/admin/users/validate', 'App\Controllers\Admin\UserController@listValidate');
 $router->get('/admin/users/admins', 'App\Controllers\Admin\UserController@listAdmin');
 $router->post('/admin/users/delete/:id', 'App\Controllers\Admin\UserController@delete');

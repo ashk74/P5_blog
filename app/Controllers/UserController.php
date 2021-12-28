@@ -10,11 +10,18 @@ class UserController extends Controller
 {
     private array $userInfos = [];
 
+    /**
+     * Display form : Signup for create new user account
+     *
+     * @return void
+     */
     public function signup()
     {
+        // Remove session array
         Session::unsetSession('errors');
         Session::unsetSession('success');
 
+        // Check if user is not connected and send parameters to the layout for display with Twig
         if (!$this->isConnected()) {
             $this->twig->display('auth/signup.twig', [
                 'form_action' => '/signup',
@@ -23,26 +30,36 @@ class UserController extends Controller
                 'token' => $this->token
             ]);
         } else {
+            // Redirect to the homepage
             header('Location: /');
         }
     }
 
+    /**
+     * Validate form : Create new user account
+     *
+     * @return void
+     */
     public function signupPost()
     {
+        // Send user data to the validator
         $validator = new Validator($_POST);
         $errors = $validator->validate([
             'first_name' => ['required', 'min:2', 'max:70'],
             'last_name' => ['required', 'min:2', 'max:70'],
             'email' => ['required', 'email'],
             'password' => ['required', 'min:6', 'max:255'],
-            'checkPassword' => ['required', 'min:6', 'max:255'],
+            'check_password' => ['required', 'min:6', 'max:255'],
             'token' => ['required', 'token']
         ]);
 
-        $cleanedData = $validator->getData();
+        // Retrieve cleaned data
+        $cleanedData = $validator->getSanitizedData();
 
-        $userExist = (new User)->emailExist($cleanedData['email']);
+        // Check is email is already used
+        $userExist = (new User)->isEmailExist($cleanedData['email']);
 
+        // Check data and insert a new user in the table
         if (!$userExist) {
             $this->userInfos = array_slice($cleanedData, -6, 3);
             $passwords = array_slice($cleanedData, -3, 2);
@@ -59,14 +76,22 @@ class UserController extends Controller
             $errors['email'][] = 'Un compte utilise déjà cette adresse email';
         }
 
+        // Store error in $_SESSION['errors]
         $validator->flashErrors($errors, '/signup');
     }
 
+    /**
+     * Display form : Login
+     *
+     * @return void
+     */
     public function login()
     {
+        // Remove session array
         Session::unsetSession('errors');
         Session::unsetSession('success');
 
+        // Check if user is not connected and send parameters to the layout for display with Twig
         if (!$this->isConnected()) {
             $this->twig->display('auth/login.twig', [
                 'form_action' => '/login',
@@ -79,26 +104,34 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Validate form : Check user data and connect
+     *
+     * @return void
+     */
     public function loginPost()
     {
+        // Send user data to the validator
         $validator = new Validator($_POST);
-
         $errors = $validator->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'min:6', 'max:255'],
             'token' => ['required', 'token']
         ]);
 
-        $this->userInfos = $validator->getData();
+        // Retrieve cleaned data
+        $this->userInfos = $validator->getSanitizedData();
 
         $user = new User;
 
-        if (!$user->emailExist($this->userInfos['email'])) {
+        // Check if user exist with email
+        if (!$user->isEmailExist($this->userInfos['email'])) {
             $errors['password'][] = 'Aucun compte existant avec cette adresse email';
         }
 
-        $user = $user->getbyEmail($this->userInfos['email']);
+        $user = $user->findByEmail($this->userInfos['email']);
 
+        // Check password and store data in session
         if (password_verify($this->userInfos['password'], $user->password)) {
             $_SESSION['success'] = true;
             $_SESSION['connected'] = true;
@@ -112,9 +145,15 @@ class UserController extends Controller
             $errors['password'][] = 'Mauvais mot de passe';
         }
 
+        // Store error in $_SESSION['errors]
         $validator->flashErrors($errors, '/login');
     }
 
+    /**
+     * Destroy session and redirect
+     *
+     * @return void
+     */
     public function logout()
     {
         session_destroy();

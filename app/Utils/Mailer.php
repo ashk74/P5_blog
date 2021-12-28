@@ -15,8 +15,8 @@ class Mailer
     {
         $this->mail = new PHPMailer(true);
 
-        $absolutePathToEnvFile = __DIR__ . '/.env';
-        (new DotEnv($absolutePathToEnvFile))->load();
+        $envPath = __DIR__ . '/.env';
+        (new DotEnv($envPath))->load();
     }
 
     public function sendMail(array $data)

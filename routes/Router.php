@@ -32,7 +32,7 @@ class Router
     }
 
     /**
-     * Check if route
+     * Check if route match with url and execute
      *
      * @return void
      */
