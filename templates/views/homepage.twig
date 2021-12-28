@@ -10,17 +10,17 @@
             </div>
         {% endif %}
         <div class="text-center my-5">
-            <img class="img-fluid rounded-circle mb-4" src="{{ constant('AVATARS') }}avatar-1.png" max alt="..." />
-            <h1 class="text-white fs-3 fw-bolder">{{ creator_name }}</h1>
+            <img class="img-fluid rounded-circle mb-4" src="{{ constant('AVATARS') }}creator-avatar.png" max alt="..." />
+            <h1 class="text-white fs-3 fw-bolder">{{ constant('CREATOR_NAME') }}</h1>
             <figure class="text-center">
                 <blockquote class="blockquote text-white-50">
-                    <p>{{ quote }}</p>
+                    <p>{{ constant('QUOTE') }}</p>
                 </blockquote>
                 <figcaption class="blockquote-footer text-white-50">
-                    <cite title="Source Title">{{ quote_author }}</cite>
+                    <cite title="Source Title">{{ constant('QUOTE_AUTHOR') }}</cite>
                 </figcaption>
             </figure>
-            <a class="btn btn-secondary col-3 col-md-2 text-bold mt-4" href="#" role="button">Mon CV</a>
+            <a class="btn btn-secondary col-3 col-md-2 text-bold mt-4" href="/public/cv/cv.pdf" download="cv.pdf" role="button">Mon CV</a>
         </div>
     </section>
 

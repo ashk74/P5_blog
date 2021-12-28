@@ -64,18 +64,25 @@ $ composer install
 ```
 
 ### 6.  Customize the homepage
-1.  Go to **app/Controllers/BlogController.php** at **line 25** to see something like the code below
+1.  Go to **app/public/index.php** at **line 13 to 20** to see the code below
 ```PHP
-$this->twig->display('homepage.twig', [
-            'page_title' => 'Accueil - Blog',
-            'creator_name' => 'Jonathan Secher',
-            'quote' => 'Dès que tu cesses d\'apprendre, tu commences à mourir.',
-            'quote_author' => 'Albert Einstein',
-            'token' => $this->token
-        ]);
+// Used in homepage.twig
+define('CREATOR_NAME', 'Your Name');
+define('QUOTE', 'Your favorite quote');
+define('QUOTE_AUTHOR', 'Author of your favorite quote');
+
+// Used in layout.twig
+define('GITHUB_LINK', 'https://github.com/your_name');
+define('LINKEDIN_LINK', 'https://www.linkedin.com/in/your_name');
+define('TWITTER_LINK', 'https://twitter.com/your_name');
 ```
-2.  Change *creator_name* value to display your name
-3.  Change the *quote* and the *quote_author* value to display your favorite quote
+2.  Define *CREATOR_NAME* value to display your name
+3.  Define the *QUOTE* and the *QUOTE_AUTHOR* value to display your favorite quote
+4.  Define *GITHUB_LINK* to display your GitHub link into the footer
+5.  Define *LINKEDIN_LINK* to display your Linkedin link into the footer
+6.  Define *TWITTER_LINK* to display your Twitter link into the footer
+7.  Choose your avatar image, rename it to *creator-avatar.png* and place it to **app/public/avatars** folder
+8.  Choose your CV, rename it to *cv.pdf* and place it **app/public/cv** folder
 
 ### 7.  Create your admin account
 1.  Use the code below to generate a valid password hash and copy the result
