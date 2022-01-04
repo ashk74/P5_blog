@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Utils\Session;
 use App\Validation\CSRF;
 
 class Controller
@@ -10,13 +11,12 @@ class Controller
     protected string $token;
 
     /**
-     * Check session status and start if necessary. Generate and store token. Load twig.
+     * Check session status and start if necessary. Secure hijacking. Generate and store token. Load twig.
      */
     public function __construct()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        Session::startSession();
+        Session::securedHijacking();
 
         $this->token = CSRF::getToken();
         $this->loadTwig();

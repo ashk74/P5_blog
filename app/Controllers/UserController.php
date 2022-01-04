@@ -133,12 +133,7 @@ class UserController extends Controller
 
         // Check password and store data in session
         if (password_verify($this->userInfos['password'], $user->password)) {
-            $_SESSION['success'] = true;
-            $_SESSION['connected'] = true;
-            $_SESSION['user_id'] = (int) $user->id;
-            $_SESSION['is_admin'] = (int) $user->is_admin;
-            $_SESSION['is_validate'] = (int) $user->is_validate;
-            $_SESSION['fullname'] = (string) $user->first_name . ' ' . $user->last_name;
+            Session::setSession($user);
 
             ($user->is_validate) ? header('Location: /admin/posts') : header('Location: /');
         } else {
@@ -156,6 +151,7 @@ class UserController extends Controller
      */
     public function logout()
     {
+        session_unset();
         session_destroy();
 
         return header('Location: /');
