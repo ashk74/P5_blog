@@ -4,8 +4,11 @@
 
 ## CONFIGURATION REQUIRE
 ### 1.  Web Server
-You need a web server with PHP7 and MySQL DBMS.
-Versions used in this project :
+a.  Minimum requirement
+*   PHP7 with **openssl** extension *enabled*
+*   SQL DBMS
+
+b.  Versions used in this project :
 *   Apache 2.4.51
 *   MySQL 8.0.27
 *   PHP 7.4.26
