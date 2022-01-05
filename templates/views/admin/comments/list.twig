@@ -1,0 +1,81 @@
+{% extends "layout.twig" %}
+
+
+{% block page_content %}
+    <section class="container mt-4">
+
+        {% block page_title %}
+            <h1 class="mb-3">{{ page_title }}</h1>
+        {% endblock %}
+
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                Filtres
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/admin/comments">Tous les commentaires</a></li>
+                <li><a class="dropdown-item" href="/admin/comments/not-moderated">En attente de modération</a></li>
+                <li><a class="dropdown-item" href="/admin/comments/moderate">Commentaires modérés</a></li>
+            </ul>
+        </div>
+
+        <section class="container col-md-12 py-4">
+            {% block display_errors %}
+                {{ parent() }}
+            {% endblock %}
+            {% for comment in comments %}
+                <div class="container-fluid pb-2">
+                    <div class="row d-flex border-top border-start border-end py-3">
+                        <div class="col-md-3 order-md-1 border-end">
+                            <div class="col-12">
+                                <div class="row border-bottom mb-2">
+                                    <div class="col-2">
+                                        <img class="img-fluid rounded-circle" src="{{ constant('AVATARS') }}/user-profile.png" alt="..." />
+                                    </div>
+
+                                    <div class="col-10 mb-3">
+                                        <span class="text-bold">{{ comment.getAuthor(comment.author).0.fullname }}</span>
+                                        <div>{{ comment.getEmail(comment.author).email }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 order-md-2 border-end text-justify">
+                            {{ comment.content|nl2br }}
+                        </div>
+                        <div class="col-md-2 mt-3 mt-md-0 order-md-4 small text-muted text-md-center">
+                            {{ comment.last_update|date('d/m/Y à H:i') }}
+                        </div>
+                        <div class="col-md-2 order-md-3 border-end text-md-center">
+                            <div class="row">
+                                <div class="col-8 col-md-12 mt-3 mt-md-0">
+                                    <div class="pb-2 border-bottom">{{ post.findById(comment.post_id).title }}</div>
+                                    <div class="pt-2"><a href="/post/{{ comment.post_id }}">Voir l'article</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <form action="/admin/comments/delete/{{ comment.id }}" method="POST" class="col-md-6">
+                            <div class="col-12 form-group">
+                                <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                            </div>
+                            <button type="submit" class="btn btn-outline-danger btn-lg col-12" onclick="return window.confirm('Êtes vous sûr de vouloir supprimer ce commentaire ?')">Supprimer</button>
+                        </form>
+                        {% if comment.is_moderate == 0 %}
+                            <form action="/admin/comments/moderate/{{ comment.id }}" method="POST" class="col-md-6">
+                                <div class="col-12 form-group">
+                                    <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                                </div>
+                                <button type="submit" class="btn btn-outline-success btn-lg col-12" onclick="return window.confirm('Êtes vous sûr de vouloir valider ce commentaire ?')">Valider</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+		</section>
+    </section>
+{% endblock page_content %}
+
+

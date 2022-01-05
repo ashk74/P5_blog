@@ -1,0 +1,14 @@
+{% macro display() %}
+    {% if _session.errors is not empty %}
+        {% for errorsArray in _session.errors %}
+            {% for errors in errorsArray %}
+                <ul class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {% for error in errors %}
+                        <li style="list-style: none;"><i class="fas fa-check-circle me-2"></i>{{ error }}</li>
+                    {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </ul>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}

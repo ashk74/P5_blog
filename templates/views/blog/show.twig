@@ -1,0 +1,92 @@
+{% extends "layout.twig" %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block page_content %}
+    <section class="container mt-4">
+        <div class="row">
+            {% block display_errors %}
+                {{ parent() }}
+            {% endblock %}
+            {% if _session.success %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Votre commentaire est en attente de modération
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+            <div class="col-md-12">
+                <!-- Blog post-->
+                <div class="card mb-4">
+                    <img class="card-img-top" src="{{ constant('IMAGES') }}{{ post.photo }}" alt="..." />
+                    <div class="card-body">
+                        <div class="row">
+                            <h1 class="col-md-7 card-title h2 pb-2">{{ post.title }}</h1>
+                            <small class="col-md-5 small text-muted text-md-end pb-3">Mis à jour le {{ post.last_update|date('d/m/Y à H:i') }}</small>
+                        </div>
+                        <p class="card-text text-bold text-justify">{{ post.chapo|nl2br }}</p>
+                        <p class="card-text text-justify">{{ post.content|nl2br }}</p>
+                        <div class="row border-top pt-3 d-flex">
+                            <div class="row col-md-12 order-md-2">
+                                <div class="col-md-6 mb-2">
+                                    <img class="img-fluid rounded-circle" src="{{ constant('AVATARS') }}/user-profile-32x32.png" alt="..." />
+                                    <span class="text-bold ps-2">{{ post.getAuthor(post.author).0.fullname }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                {% if comments|length > 0 %}
+                    <h2 class="h3 col-md-12 mb-4 ms-3">Commentaires</h2>
+                {% endif %}
+
+                {% for comment in comments %}
+                    {% if comment.is_moderate == 1 %}
+                        <div class="row border-bottom pt-4">
+                            <div class="col-1 text-end">
+                                <img class="img-fluid rounded-circle" src="{{ constant('AVATARS') }}/user-profile-32x32.png" alt="..." />
+                            </div>
+
+                            <div class="col-11 ps-2">
+                                <span class="text-bold">{{ post.getAuthor(comment.author).0.fullname }}</span>
+                                <div class="small text-muted">{{ comment.last_update|date('d/m/Y à H:i') }}</div>
+                                <p>{{ comment.content|nl2br }}</p>
+                                {% if comment.author == _session.user_id %}
+                                    <form action="/comment/delete/{{ comment.id }}" method="POST" class="mb-4">
+                                        <div class="col-12 form-group">
+                                            <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                                        </div>
+                                        <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return window.confirm('Êtes vous sûr de vouloir supprimer ce commentaire ?')">Supprimer</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+			</div>
+
+            {% if _session.connected %}
+                <div class="col-md-12 mb-4 ms-3">
+					<h2 class="h3" id="addComment">Laisser un commentaire</h2>
+                    <form action="/post/{{ post.id }}" method="post">
+                        <div class="col-12 form-group">
+                            <textarea class="form-control" id="content" name="content" rows="5" cols="50" placeholder="Contenu du commentaire" required></textarea>
+                        </div>
+                        <div class="col-12 form-group">
+                            <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+                        </div>
+                        <button type="submit" class="col-12 btn btn-info btn-lg">Commenter</button>
+                    </form>
+				</div>
+            {% else %}
+                <div class="text-center mb-4">
+                    <a href="/login" class="btn btn-success col-md-6" role="button">Connectez-vous pour commenter cet article</a>
+                </div>
+            {% endif %}
+		</div>
+    </section>
+{% endblock page_content %}
