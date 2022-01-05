@@ -15,7 +15,7 @@ class Route
     }
 
     /**
-     * Undocumented function
+     * Check if url passed in parameter match with existing route
      *
      * @param string $url
      * @return boolean
@@ -25,8 +25,7 @@ class Route
         $path = preg_replace('#:([\w]+)#', '([^/]+)', $this->path);
         $pathToMatch = "#^$path$#";
 
-        if (preg_match($pathToMatch, $url, $matches))
-        {
+        if (preg_match($pathToMatch, $url, $matches)) {
             $this->matches = $matches;
             return true;
         } else {
@@ -34,6 +33,11 @@ class Route
         }
     }
 
+    /**
+     * Instantiate the right controller method
+     *
+     * @return void
+     */
     public function execute()
     {
         $params = explode('@', $this->action);

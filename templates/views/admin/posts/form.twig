@@ -1,0 +1,52 @@
+{% extends "layout.twig" %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="../../../public/css/style.css" />
+{% endblock %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block page_content %}
+    <section class="container col-md-6 py-4">
+        {% block page_title %}
+            <h1 class="mb-4">{{ post.title is not empty ? 'Modifier : ' ~ post.title : 'Créer un nouvel article' }}</h1>
+        {% endblock %}
+        {% block display_errors %}
+            {{ parent() }}
+        {% endblock %}
+        <form action="{{ post is not empty ? '/admin/posts/edit/' ~ post.id : '/admin/posts/create' }}" method="POST" class="row g-2">
+            <div class="col-12">
+                <input type="text" name="title" id="title" class="form-control fa-unicode" value="{{ post.title ?? '' }}" placeholder="&#xf1dc; Titre de l'article">
+            </div>
+
+            <div class="col-12">
+                <textarea name="chapo" id="chapo" class="form-control fa-unicode" cols="30" rows="5" placeholder="&#xf6e8; Chapô">{{ post.chapo ?? '' }}</textarea>
+            </div>
+            <div class="col-12">
+                <textarea name="content" id="content" class="form-control fa-unicode" cols="30" rows="10" placeholder="&#xf6e8; Contenu de l'article">{{ post.content ?? '' }}</textarea>
+            </div>
+            <div class="col-12">
+                <label for="author">Auteur</label>
+                <select class="form-select" id="author" name="author" required>
+                    {% for author in authors %}
+                        <option value="{{ author.id }}"
+                        {% if post is not empty %}
+                            {{ author.id is same as post.author ? 'selected' : '' }}
+                        {% endif %}
+                        >{{ author.fullname }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12 form-group">
+                <input type="hidden" id="token" name="token" class="form-control fa-unicode" value="{{ token }}"/>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-lg col-12 my-4">{{ post is not empty ? 'Enregistrer les modifications' : 'Enregistrer l\'article' }}</button>
+            </div>
+        </form>
+    </section>
+
+{% endblock page_content %}
+
