@@ -127,21 +127,21 @@ class UserController extends Controller
         // Check if user exist with email
         if (!$user->isEmailExist($this->userInfos['email'])) {
             $errors['password'][] = 'Aucun compte existant avec cette adresse email';
-        }
-
-        $user = $user->findByEmail($this->userInfos['email']);
-
-        // Check password and store data in session
-        if (password_verify($this->userInfos['password'], $user->password)) {
-            Session::setSession($user);
-
-            ($user->is_validate) ? header('Location: /admin/posts') : header('Location: /');
         } else {
-            $errors['password'][] = 'Mauvais mot de passe';
-        }
+            $user = $user->findByEmail($this->userInfos['email']);
 
-        // Store error in $_SESSION['errors]
-        $validator->flashErrors($errors, '/login');
+            // Check password and store data in session
+            if (password_verify($this->userInfos['password'], $user->password)) {
+                Session::setSession($user);
+
+                ($user->is_validate) ? header('Location: /admin/posts') : header('Location: /');
+            } else {
+                $errors['password'][] = 'Mauvais mot de passe';
+            }
+
+
+        }// Store error in $_SESSION['errors]
+            $validator->flashErrors($errors, '/login');
     }
 
     /**

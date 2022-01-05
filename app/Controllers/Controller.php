@@ -32,7 +32,7 @@ class Controller
     {
         $loader = new \Twig\Loader\FilesystemLoader(['../templates', '../templates/views', '../templates/macros']);
         $this->twig = new \Twig\Environment($loader, [
-            'debug' => true,
+            'debug' => false,
             'cache' => false,
             'autoescape' => 'html'
         ]);
