@@ -89,12 +89,9 @@ define('TWITTER_LINK', 'https://twitter.com/your_name');
 8.  Choose your CV, rename it to *cv.pdf* and place it **app/public/cv** folder
 
 ### 7.  Create your admin account
-1.  Use the code below to generate a valid password hash and copy the result
-```PHP
-var_dump(password_hash('yourSecretPassword', PASSWORD_BCRYPT, ['cost' => 9]));
-```
-2.  Go to your DBMS
-3.  Create a new user with your informations and the hash you have save
+1.  Launch the server
+2.  Create an account on the signup page
+3.  Go to your DBMS
 4.  Set *is_validate* to 1
 5.  Set *is_admin* to 1
 
