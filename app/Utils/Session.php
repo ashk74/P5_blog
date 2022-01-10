@@ -21,7 +21,7 @@ class Session
     public static function startSession(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
-            session_start(['cookie_secure' => true, 'cookie_httponly' => true]);
+            session_start(['cookie_secure' => false, 'cookie_httponly' => true]);
         }
     }
 
