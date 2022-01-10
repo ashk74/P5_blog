@@ -138,10 +138,9 @@ class UserController extends Controller
             } else {
                 $errors['password'][] = 'Mauvais mot de passe';
             }
-
-
-        }// Store error in $_SESSION['errors]
-            $validator->flashErrors($errors, '/login');
+        }
+        // Store error in $_SESSION['errors]
+        $validator->flashErrors($errors, '/login');
     }
 
     /**
