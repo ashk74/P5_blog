@@ -1,2 +1,5 @@
 /vendor/
 test.php
+
+# Local SMTP credentials; never version this file.
+/app/Utils/.env
