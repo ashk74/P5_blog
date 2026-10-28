@@ -1,2 +1,5 @@
 /vendor/
 test.php
+
+# Local environment configuration; never version credentials.
+/app/Utils/.env
